@@ -1,14 +1,14 @@
 sketch.default2d();
 
-function draw(){
-	with (sketch) {
-		glclearcolor(ctx.rgba.dark_gray);
-		glcolor(ctx.rgba.blue);
-		glclear();
-
-		refresh();
-	}
-}
+var ctx = {
+	rgba:{// ableton 10 theme colors
+		dark_gray: [40/255,  40/255,  40/255, 1],
+		gray: [127/255,  127/255,  127/255, 1],
+		orange: [255/255, 181/255, 150/255, 1],
+		blue: [109/255, 215/255, 255/255, 1],
+		red: [230/255, 30/255, 100/255, 1],
+	},
+}; 
 
 function log() {
 	for(var i=0,len=arguments.length; i<len; i++) {
@@ -28,6 +28,16 @@ function log() {
 		}
 	}
 	post("\n");
+}
+
+function draw(){
+	with (sketch) {
+		glclearcolor(ctx.rgba.dark_gray);
+		glcolor(ctx.rgba.blue);
+		glclear();
+
+		refresh();
+	}
 }
 
 function onidle(x, y, button, cmd, shift, capslock, alt, ctrl){
