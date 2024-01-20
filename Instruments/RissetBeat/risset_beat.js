@@ -1,3 +1,4 @@
+sketch.default2d();
 
 // context
 var ctx = {
@@ -6,6 +7,13 @@ var ctx = {
 	ol: {
 		"my first outlet 1": 0,
 		"another outlet": 1,
+	},
+    rgba:{// ableton 10 theme colors
+		dark_gray: [40/255,  40/255,  40/255, 1],
+		gray: [127/255,  127/255,  127/255, 1],
+		orange: [255/255, 181/255, 150/255, 1],
+		blue: [109/255, 215/255, 255/255, 1],
+		red: [230/255, 30/255, 100/255, 1],
 	},
 }; 
 
@@ -28,6 +36,39 @@ function log() {
   }
   post("\n");
 }
+
+
+function draw(){
+	with (sketch) {
+		glclearcolor(ctx.rgba.dark_gray);
+		glcolor(ctx.rgba.blue);
+		glclear();
+
+		refresh();
+	}
+}
+
+function onidle(x, y, button, cmd, shift, capslock, alt, ctrl){
+    log("onidle", x, y, button, cmd, shift, capslock, alt, ctrl)
+	draw();
+}
+
+function onidleout(x, y, button, cmd, shift, capslock, alt, ctrl){
+    log("onidleout", x, y, button, cmd, shift, capslock, alt, ctrl)
+	draw();
+}
+
+
+function onclick(x, y, button, cmd, shift, capslock, alt, ctrl){
+    log("onclick", x, y, button, cmd, shift, capslock, alt, ctrl)
+	draw();
+}
+
+function ondrag(x, y, button, cmd, shift, capslock, alt, ctrl){
+	log("ondrag", x, y, button, cmd, shift, capslock, alt, ctrl)
+	draw();
+}
+
 
 function outlet_myfistoutlet(){
 	outlet(ctx.ol["my first outlet"], "blablabla");
@@ -75,6 +116,7 @@ function anything(){
 function initialize(){
 	log("\nS T A R T initialize");
 	ctx.initialized = true;
+    draw()
 	log("E N D initialize\n");
 }
 
