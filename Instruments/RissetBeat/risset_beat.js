@@ -2,10 +2,11 @@ sketch.default2d();
 
 var static_cfg = {
 	// outlets positions
-	ol: {
+	outlets: {
 		"pos": 0,
 		"vel": 1,
 		"acc": 2,
+		"line segment": 3,
 	},
     rgba:{// ableton 10 theme colors
 		dark_gray: [40/255,  40/255,  40/255, 1],
@@ -52,14 +53,21 @@ function log() {
   post("\n");
 }
 
-function outlet_pos(pos){outlet(static_cfg.ol["pos"], pos)}
-function outlet_vel(vel){outlet(static_cfg.ol["vel"], vel)}
-function outlet_acc(acc){outlet(static_cfg.ol["acc"], acc)}
+function outlet_pos(){outlet(static_cfg.outlets["pos"], state.pos)}
+function outlet_vel(){outlet(static_cfg.outlets["vel"], state.vel)}
+function outlet_acc(){outlet(static_cfg.outlets["acc"], state.acc)}
+function outlet_line_segment(){
+	pos0_ms = state.pos*1000.0
+	dt_ms = cfg.dt*1000.0
+	pos1_ms = pos0_ms + state.vel*dt_ms
+	outlet(static_cfg.outlets["line segment"], pos0_ms, pos1_ms, dt_ms)
+}
 
 function outlet_all(){
-	outlet_pos(state.pos)
-	outlet_vel(state.vel)
-	outlet_acc(state.acc)
+	outlet_line_segment()
+	outlet_acc()
+	outlet_vel()
+	outlet_pos()
 }
 
 function update(){
@@ -68,7 +76,7 @@ function update(){
 	state.acc = cfg.octaves * period/cfg.beats  // [oct/s^2]
 	state.vel = state.vel * Math.pow(2.0, cfg.dt*state.acc)  // [s'/s]  second read per second
 	state.pos = state.pos + state.vel*cfg.dt  // [s']
-	log(state.vel)
+	log(state.pos, state.vel, state.acc)
 }
 
 function draw(){
@@ -167,8 +175,10 @@ function anything(){
 
 function initialize(){
 	log("\nS T A R T initialize")
-	state.initialized = true
-	state.vel = 1.0
+	state.initialized=true
+	state.acc=0.0
+	state.vel=1.0
+	state.pos=0.0
     draw()
 	log("E N D initialize\n")
 }
@@ -181,4 +191,4 @@ Object.size = function(obj) {
 	  }
 	  return size
 }
-outlets = Object.size(static_cfg.ol)
+outlets = Object.size(static_cfg.outlets)
