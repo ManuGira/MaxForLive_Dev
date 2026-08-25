@@ -4,10 +4,15 @@ var cst = {
 
 var ctx = {
 	voice_index: -1,
+	voices_last_message: null,
 };
 
 function reset(){
 	ctx.voice_index = -1;
+    ctx.voices_last_message = new Array(cst.VOICE_COUNT);
+    for (var i = 0; i < cst.VOICE_COUNT; i++) {
+        ctx.voices_last_message[i] = null;
+    }
 }
 
 inlets = 1;
@@ -20,12 +25,25 @@ function Message(pitch, velocity, channel) {
 }
 
 function _process(pitch, velocity, channel) {
+	if (velocity === 0) {
+		// Note off message are ignored
+		return null;
+	}		
+
+	// round robin allocation of voices for note on messages
 	ctx.voice_index = (ctx.voice_index + 1) % cst.VOICE_COUNT;
-	return [ctx.voice_index, new Message(pitch, velocity, channel)];
+	var target_voice_index = ctx.voice_index;
+
+	var msg = new Message(pitch, velocity, channel);
+	ctx.voices_last_message[target_voice_index] = msg;
+	return [target_voice_index, msg];
 }
 
 function list(pitch, velocity, channel) { 
 	var result = _process(pitch, velocity, channel);
+	if (result === null) {
+		return;
+	}
 	var i = result[0];
 	var message = result[1];
 	outlet(i, message.pitch, message.velocity, message.channel);
@@ -52,11 +70,10 @@ function _is_message(value) {
         value.channel >= 1 && value.channel <= 16;
 }
 
-function _test_ProcessFunctionReturnsValidMessage() {
+function _test_ProcessFunctionReturnsValidMessageWhenVelocityIsNotZero() {
 	var messages = [
 		new Message(60, 100, 1),
 		new Message(62, 100, 1),
-		new Message(64, 0, 1),
 		new Message(65, 127, 1),
 		new Message(67, 100, 1),
 	];
@@ -67,13 +84,35 @@ function _test_ProcessFunctionReturnsValidMessage() {
 		var voice_index = result[0];
 		var message = result[1];
 		if (!_is_message(message)) {
-			error("ProcessFunctionReturnsValidMessage: Invalid message returned for input: " + messages[i] + "\n");
+			error("ProcessFunctionReturnsValidMessageWhenVelocityIsNotZero: Invalid message returned for input: " + messages[i] + "\n");
 			success = false;
 		}
 	}
 
 	if (!success) {
-		error("monopoly.js test ProcessFunctionReturnsValidMessage fails!!!!!!!!!!!!!!!!!!!\n");
+		error("monopoly.js test ProcessFunctionReturnsValidMessageWhenVelocityIsNotZero fails!!!!!!!!!!!!!!!!!!!\n");
+	}
+	return success;
+}
+
+function _test_ProcessFunctionReturnsNullWhenVelocityIsZero() {
+	var messages = [
+		new Message(60, 0, 1),
+		new Message(62, 0, 1),
+		new Message(64, 0, 1),
+	];
+
+	var success = true;
+	for (var i = 0; i < messages.length; i++) {
+		var result = _process(messages[i].pitch, messages[i].velocity, messages[i].channel);
+		if (result !== null) {
+			error("ProcessFunctionReturnsNullWhenVelocityIsZero: Expected null for input: " + messages[i] + "\n");
+			success = false;
+		}
+	}
+
+	if (!success) {
+		error("monopoly.js test ProcessFunctionReturnsNullWhenVelocityIsZero fails!!!!!!!!!!!!!!!!!!!\n");
 	}
 	return success;
 }
@@ -108,29 +147,30 @@ function _test_NotesOnAreRoutedCorrectly() {
 }
 
 
-function _test_NotesOffAreRoutedCorrectly() {
-	// We remember which pitch is applied to which voice. when vel 0 is received, we must route it to the corresponding voice.
+function _test_NotesOffAreNotIncrementingVoiceIndex() {
+	// We remember which pitch is applied to which voice. when vel 0 is received, it is ignored.
 	var messages = [
-		new Message(60, 100, 1),
-		new Message(62, 100, 1),
-		new Message(60, 0, 1),
+		new Message(60, 100, 1),  // voice index is 0
+		new Message(70, 100, 1),  // voice index is 1
+		new Message(60, 0, 1),	// this message will be ignored, and _process should return null. 
+		new Message(80, 100, 1),  // voice index is 2
 	];
-	expected_voice_indices = [0, 1, 0];
+	var expected_voice_indices = [0, 1, null, 2];
 
 	var success = true;
 	for (var i = 0; i < messages.length; i++) {
 		var expected_voice_index = expected_voice_indices[i];
 		var result = _process(messages[i].pitch, messages[i].velocity, messages[i].channel);
-		var voice_index = result[0];
+		var voice_index = result !== null ? result[0] : null;
 
-		if (voice_index != expected_voice_index) {
-			error("NotesOffAreRoutedCorrectly: Expected voice index: " + expected_voice_index + ", but got: " + voice_index + " (i=" + i + ")\n");
+		if (voice_index !== expected_voice_index) {
+			error("NotesOffAreNotIncrementingVoiceIndex: Expected voice index: " + expected_voice_index + ", but got: " + voice_index + " (i=" + i + ")\n");
 			success = false;
 		}
 	}
 
 	if (!success) {
-		error("monopoly.js test NotesOffAreRoutedCorrectly fails!!!!!!!!!!!!!!!!!!!\n");
+		error("monopoly.js test NotesOffAreNotIncrementingVoiceIndex fails!!!!!!!!!!!!!!!!!!!\n");
 	}
 	return success;
 }
@@ -140,15 +180,22 @@ function test() {
 	var success = true;
 
 	reset();
-	success &= _test_ProcessFunctionReturnsValidMessage();
+	success &= _test_ProcessFunctionReturnsValidMessageWhenVelocityIsNotZero();
+	
+	reset();
+	success &= _test_ProcessFunctionReturnsNullWhenVelocityIsZero();
 
 	reset();
 	success &= _test_NotesOnAreRoutedCorrectly();
 
 	reset();
-	success &= _test_NotesOffAreRoutedCorrectly();
+	success &= _test_NotesOffAreNotIncrementingVoiceIndex();
 
 	if (success) {
 		post("monopoly.js all test passes!\n");
 	}
 }
+
+
+post("INITIALIZATION\n");
+reset();
