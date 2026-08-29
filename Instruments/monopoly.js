@@ -30,6 +30,20 @@ function _process(pitch, velocity, channel) {
 		return null;
 	}		
 
+	if (pitch < 4){
+		// pitches 0 to 3 are used as commands for note offs
+		// for example, if pitch is 1, we recover the pitch of voice 1 and send a note off message for it
+		var target_voice_index = pitch;
+		var last_message = ctx.voices_last_message[target_voice_index];
+		if (last_message !== null) {
+			// send note off message for the last message of this voice
+			var note_off_msg = new Message(last_message.pitch, 0, last_message.channel);
+			ctx.voices_last_message[target_voice_index] = null;
+			return [target_voice_index, note_off_msg];
+		}
+		return null;
+	}
+
 	// round robin allocation of voices for note on messages
 	ctx.voice_index = (ctx.voice_index + 1) % cst.VOICE_COUNT;
 	var target_voice_index = ctx.voice_index;
@@ -175,6 +189,54 @@ function _test_NotesOffAreNotIncrementingVoiceIndex() {
 	return success;
 }
 
+
+function _test_Pitch0To3AreUsedAsCommandsForNoteOffs() {
+	// Implement the test for pitch 0 to 12 being used as commands for note offs.
+	// This is a placeholder for the actual test logic.
+	
+	var messages = [
+		new Message(60, 100, 1),  // voice 0 has pitch 60
+		new Message(62, 100, 1),  // voice 1 has pitch 62
+		new Message(64, 100, 1),  // voice 2 has pitch 64
+		new Message(65, 100, 1),  // voice 3 has pitch 65
+		new Message(0, 100, 1),   // note on with pitch 0 is mapped to voice 0 note off
+		new Message(1, 100, 1),   // note on with pitch 1 is mapped to voice 1 note off
+		new Message(2, 100, 1),   // note on with pitch 2 is mapped to voice 2 note off
+		new Message(3, 100, 1),   // note on with pitch 3 is mapped to voice 3 note off
+		new Message(0, 0, 1),   // note off with pitch 0 is ignored
+		new Message(1, 0, 1),   // note off with pitch 1 is ignored
+		new Message(2, 0, 1),   // note off with pitch 2 is ignored
+		new Message(3, 0, 1),   // note off with pitch 3 is ignored
+	];
+	
+	var expected_voice_indices = [0, 1, 2, 3, 0, 1, 2, 3, null, null, null, null];
+	var expected_pitches = [60, 62, 64, 65, 60, 62, 64, 65, null, null, null, null];
+	var expected_velocities = [100, 100, 100, 100, 0, 0, 0, 0, null, null, null, null];
+	
+	var success = true;
+	for (var i = 0; i < messages.length; i++) {
+		var expected_voice_index = expected_voice_indices[i];
+		var expected_pitch = expected_pitches[i];
+		var expected_velocity = expected_velocities[i];
+		var result = _process(messages[i].pitch, messages[i].velocity, messages[i].channel);
+		var voice_index = result !== null ? result[0] : null;
+		var result_msg = result !== null ? result[1] : null;
+		var pitch = result_msg !== null ? result_msg.pitch : null;
+		var velocity = result_msg !== null ? result_msg.velocity : null;
+
+		if (voice_index !== expected_voice_index || pitch !== expected_pitch || velocity !== expected_velocity) {
+			error("Pitch0To3AreUsedAsCommandsForNoteOffs: Expected (voice, pitch, velocity): (" + expected_voice_index + ", " + expected_pitch + ", " + expected_velocity + "), but got: (" + voice_index + ", " + pitch + ", " + velocity + ") (i=" + i + ")\n");
+			success = false;
+		}
+	}
+
+	if (!success) {
+		error("monopoly.js test Pitch0To3AreUsedAsCommandsForNoteOffs fails!!!!!!!!!!!!!!!!!!!\n");
+	}
+	return success;
+}
+
+
 function test() {
 	post("monopoly.js test started...\n");
 	var success = true;
@@ -190,6 +252,9 @@ function test() {
 
 	reset();
 	success &= _test_NotesOffAreNotIncrementingVoiceIndex();
+
+	reset();
+	success &= _test_Pitch0To3AreUsedAsCommandsForNoteOffs();
 
 	if (success) {
 		post("monopoly.js all test passes!\n");
