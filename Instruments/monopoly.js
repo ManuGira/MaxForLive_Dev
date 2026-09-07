@@ -16,7 +16,7 @@ function reset(){
 }
 
 inlets = 1;
-outlets = cst.VOICE_COUNT;
+outlets = 1;
 
 function Message(pitch, velocity, channel) {
     this.pitch = pitch;
@@ -30,10 +30,10 @@ function _process(pitch, velocity, channel) {
 		return null;
 	}		
 
-	if (pitch < 4){
-		// pitches 0 to 3 are used as commands for note offs
+	if (pitch < 12){
+		// pitches 0 to 11 are used as commands for note offs
 		// for example, if pitch is 1, we recover the pitch of voice 1 and send a note off message for it
-		var target_voice_index = pitch;
+		var target_voice_index = pitch % 12;
 		var last_message = ctx.voices_last_message[target_voice_index];
 		if (last_message !== null) {
 			// send note off message for the last message of this voice
@@ -60,13 +60,13 @@ function list(pitch, velocity, channel) {
 	}
 	var i = result[0];
 	var message = result[1];
-	outlet(i, message.pitch, message.velocity, message.channel);
+	outlet(0, i, [message.pitch, message.velocity, message.channel]);
 }
 
 function panic(){
 	reset();
 	for (var i = 0; i < cst.VOICE_COUNT; i++) {
-		outlet(i, 0, 0, 1); // send note off to all voices
+		outlet(0, i, [0, 0, 1]); // send note off to all voices
 	}
 }
 
