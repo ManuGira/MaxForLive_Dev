@@ -1,0 +1,59 @@
+{
+    "workbench.colorTheme": "Visual Studio Light",
+    "workbench.colorCustomizations": {
+        // dark:   #444444
+        // middark: #666666
+        // midlight: #aaaaaa
+        // light:  #eeeeee
+
+        // color:  #bb4466
+        // light:  #ff77aa
+        // pop:    #ff4477
+
+        "titleBar.activeForeground": "#ff77aa",
+        "titleBar.activeBackground": "#444444",
+        "titleBar.inactiveBackground": "#666666",
+        "titleBar.border": "#bb4466",	
+        
+        "activityBar.background": "#bb4466",
+        "activityBar.activeBackground": "#ff4477",
+
+        "sideBarTitle.background": "#444444",
+        "sideBarTitle.foreground": "#eeeeee",
+        "sideBarTitle.border": "#bb4466",
+        
+        "sideBar.foreground": "#444444",
+        "sideBar.background": "#eeeeee",
+        "sideBar.border": "#bb4466",
+        
+        "sideBarSectionHeader.border": "#ff4477",
+        
+        "icon.foreground": "#bb4466",
+        
+        "menu.foreground": "#bb4466",
+        "menu.background": "#eeeeee",
+        
+        "tab.activeForeground": "#bb4466",
+        "tab.border": "#ff4477",
+        
+        "editorGroupHeader.tabsBorder": "#bb4466",
+        
+        "panel.border": "#bb4466",
+        "panel.background": "#eeeeee",
+
+        "activityBar.foreground": "#eeeeee",     
+    },
+
+  "terminal.integrated.defaultProfile.windows": "Git Bash",
+  "[rust]": {
+    "editor.defaultFormatter": "rust-lang.rust-analyzer",
+    "editor.formatOnSave": false
+  },
+  "rust-analyzer.cargo.target": "thumbv4t-none-eabi",
+  "rust-analyzer.cargo.sysroot": "discover",
+  "rust-analyzer.cargo.buildScripts.enable": true,
+  "rust-analyzer.procMacro.enable": true,
+  "rust-analyzer.files.excludeDirs": [
+    "target"
+  ]
+}
