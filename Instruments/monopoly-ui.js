@@ -96,7 +96,6 @@ function draw()
 
 function anything(){
 	var msg = arrayfromargs(messagename, arguments);
-    post("Received message: ", msg, "\n");
     var n = msg.length/2;
 
     state.notes = [];
