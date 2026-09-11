@@ -25,12 +25,10 @@ function clamp(value, min, max) {
 
 function on_new_glide_ms(glide_ms) {
     ctx.glide_ms = 1.0*clamp(glide_ms, 1, 2000);
-    post("Glide time set to: " + ctx.glide_ms + " ms\n");
 }
 
 function on_new_velocity(velocity) {
     ctx.velocity = 1.0*clamp(velocity, 0, 127); // Clamp between 0 and 127
-    post("Velocity set to: " + ctx.velocity + "\n");
 }
 
 function msg_float(value) {
@@ -48,7 +46,6 @@ function on_new_pitch(pitch) {
 
     var is_note_on = !ctx.is_active && ctx.velocity > 0;
     if (is_note_on){
-        post("Note ON\n");
         ctx.is_active = true;
 
         // no pitch glide, instant 
@@ -59,9 +56,8 @@ function on_new_pitch(pitch) {
         return;
     }
 
-    var is_note_off = ctx.velocity === 0;
+    var is_note_off = ctx.velocity < 0.5;
     if (is_note_off) {
-        post("Note OFF\n");
         // no pitch glide when note off
         // remember that the note is off
         ctx.is_active = false;
@@ -73,11 +69,7 @@ function on_new_pitch(pitch) {
     // here we handle the case of note slide
     
     // both pitch and velocity glides
-    post("Note SLIDE\n");
     ctx.is_active = true;
     outlet(1, [ctx.velocity, ctx.glide_ms]);
     outlet(0, [pitch, ctx.glide_ms]);
 }
-
-post("Monopoly envelope script loaded\n");
-

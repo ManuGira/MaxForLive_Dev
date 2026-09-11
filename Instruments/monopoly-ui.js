@@ -50,7 +50,7 @@ function mtox(pitch)
 }
 
 
-function draw()
+function draw_background()
 {
     var box_width = box.rect[2] - box.rect[0];     
     var box_height = box.rect[3] - box.rect[1]; 
@@ -75,6 +75,16 @@ function draw()
         var x = 2* width * ((i- ctx.N/2) / ctx.N);
         sketch.glrect(x - rect_half_width, 0, x + rect_half_width, height);
     }
+}
+
+function draw()
+{
+    draw_background();
+
+    var box_width = box.rect[2] - box.rect[0];     
+    var box_height = box.rect[3] - box.rect[1]; 
+    var width = box_width / box_height;
+    var rect_width = width/(ctx.N*2/3);
     
     // draw colored circles for each pitch
     for (var i = 0; i < state.notes.length; i++) {
