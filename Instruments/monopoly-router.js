@@ -5,6 +5,9 @@ var cst = {
 var ctx = {
 	voice_index: -1,
 	voices_last_message: null,
+	held_control_pitches: null,        // Object used as a set: {0: true, 1: true, ...}
+	control_pitch_order: null,         // Array maintaining activation order of control pitches
+	voice_has_note_after_activation: null,  // Array[4] - has a note been routed after this voice's control pitch was activated?
 };
 
 function reset(){
@@ -12,6 +15,12 @@ function reset(){
     ctx.voices_last_message = new Array(cst.VOICE_COUNT);
     for (var i = 0; i < cst.VOICE_COUNT; i++) {
         ctx.voices_last_message[i] = null;
+    }
+    ctx.held_control_pitches = {};
+    ctx.control_pitch_order = [];
+    ctx.voice_has_note_after_activation = new Array(cst.VOICE_COUNT);
+    for (var i = 0; i < cst.VOICE_COUNT; i++) {
+        ctx.voice_has_note_after_activation[i] = false;
     }
 }
 
@@ -23,32 +32,68 @@ function Message(pitch, velocity) {
     this.velocity = velocity;
 }
 
+function _get_active_voice_set() {
+	// Returns array of voice indices that should receive note routing
+	// If control pitches are held, only route to those voices in activation order
+	// Otherwise, route to all voices
+	if (ctx.control_pitch_order.length === 0) {
+		// No control pitches held - use all voices
+		return [0, 1, 2, 3];
+	} else {
+		// Use only held control pitches in their activation order
+		return ctx.control_pitch_order.slice();
+	}
+}
+
 function _process(pitch, velocity) {
 	if (velocity === 0) {
-		// Note off message are ignored
-		return null;
+		// Note off messages
+		if (pitch < 12) {
+			// Control pitch release
+			var voice_index = pitch % 12;
+			var had_note_after_activation = ctx.voice_has_note_after_activation[voice_index];
+			
+			// Remove from held control pitches
+			delete ctx.held_control_pitches[voice_index];
+			
+			// Remove from control pitch activation order
+			var order_index = ctx.control_pitch_order.indexOf(voice_index);
+			if (order_index !== -1) {
+				ctx.control_pitch_order.splice(order_index, 1);
+			}
+			
+			// Send note-off only if no notes were routed to this voice AFTER its control pitch was activated
+			if (!had_note_after_activation) {
+				var note_off_msg = new Message(pitch, 0);
+				return [voice_index, note_off_msg];
+			}
+			return null;
+		} else {
+			// Regular note-off - ignore
+			return null;
+		}
 	}		
 
-	if (pitch < 12){
-		// pitches 0 to 11 are used as commands for note offs
-		// for example, if pitch is 1, we recover the pitch of voice 1 and send a note off message for it
-		var target_voice_index = pitch % 12;
-		var last_message = ctx.voices_last_message[target_voice_index];
-		if (last_message !== null) {
-			// send note off message for the last message of this voice
-			var note_off_msg = new Message(last_message.pitch, 0);
-			ctx.voices_last_message[target_voice_index] = null;
-			return [target_voice_index, note_off_msg];
-		}
+	if (pitch < 12) {
+		// Control pitch activation
+		// Add voice to active set and reset note-sent tracking for this voice
+		var voice_index = pitch % 12;
+		ctx.held_control_pitches[voice_index] = true;
+		ctx.control_pitch_order.push(voice_index);
+		ctx.voice_has_note_after_activation[voice_index] = false;
 		return null;
 	}
 
-	// round robin allocation of voices for note on messages
-	ctx.voice_index = (ctx.voice_index + 1) % cst.VOICE_COUNT;
-	var target_voice_index = ctx.voice_index;
+	// Regular note on (pitch >= 12, velocity > 0)
+	var active_voices = _get_active_voice_set();
+	
+	// Use round-robin allocation within the active voice set
+	ctx.voice_index = (ctx.voice_index + 1) % active_voices.length;
+	var target_voice_index = active_voices[ctx.voice_index];
 
 	var msg = new Message(pitch, velocity);
 	ctx.voices_last_message[target_voice_index] = msg;
+	ctx.voice_has_note_after_activation[target_voice_index] = true;
 	return [target_voice_index, msg];
 }
 
@@ -67,6 +112,9 @@ function panic(){
 	for (var i = 0; i < cst.VOICE_COUNT; i++) {
 		outlet(0, i, [0, 0, 1]); // send note off to all voices
 	}
+	// Reset held control pitches
+	ctx.held_control_pitches = {};
+	ctx.control_pitch_order = [];
 }
 
 
@@ -478,3 +526,4 @@ function test() {
 
 post("INITIALIZATION\n");
 reset();
+
