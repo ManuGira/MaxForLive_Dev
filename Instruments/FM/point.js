@@ -1,14 +1,17 @@
 // Draggable point with x, y normalized to 0-1, (0,0) = top left. Drawn on the global `sketch`.
 
-function clamp01(v)
+function clamp(v, lo, hi)
 {
-	return Math.min(Math.max(0, v), 1);
+	return Math.min(Math.max(lo, v), hi);
 }
 
 function Point(x, y)
 {
-	this.x = clamp01(x);
-	this.y = clamp01(y);
+	this.minx = 0; // x and y are always kept within [minx, maxx] and [miny, maxy]
+	this.miny = 0;
+	this.maxx = 1;
+	this.maxy = 1;
+	this.move(x, y);
 	this.radius = Point.DEFAULT_RADIUS; // pixels
 	this.color = Point.DEFAULT_COLOR.slice(); // [r, g, b, a], 0-1
 	this.enabled = true; // disabled: not draggable, never filled, drawn at half alpha
@@ -20,8 +23,17 @@ Point.DEFAULT_COLOR = [1., 1., 1., 1.];
 
 Point.prototype.move = function(x, y)
 {
-	this.x = clamp01(x);
-	this.y = clamp01(y);
+	this.x = clamp(x, this.minx, this.maxx);
+	this.y = clamp(y, this.miny, this.maxy);
+};
+
+Point.prototype.setLimits = function(minx, miny, maxx, maxy)
+{
+	this.minx = minx;
+	this.miny = miny;
+	this.maxx = maxx;
+	this.maxy = maxy;
+	this.move(this.x, this.y);
 };
 
 // px, py in pixels; s is [width, height] in pixels
