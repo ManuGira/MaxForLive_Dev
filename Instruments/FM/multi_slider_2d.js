@@ -1,14 +1,15 @@
 /*
 
-2d slider with a list of draggable points on a black background.
-Outputs "index x y" with x, y normalized to 0-1, (0,0) = top left, (1,1) = bottom right.
+2d slider with a 2d list (list of rows) of draggable points on a black background.
+Outputs "i j x y" with x, y normalized to 0-1, (0,0) = top left, (1,1) = bottom right.
 
 messages:
-	add x y            append a point
-	remove i           remove point i
+	add i x y          append a point to row i (rows are created as needed)
+	remove i j         remove point j of row i
+	remove i           remove row i
 	clear              remove all points
-	set i x y          move point i, no output
-	list i x y         move point i and output
+	set i j x y        move point (i, j), no output
+	list i j x y       move point (i, j) and output
 	colour r g b       circle colour (0-255)
 	bang               output every point
 
@@ -19,13 +20,15 @@ arguments: circlered circlegreen circleblue (0-255, default white)
 inlets = 1;
 outlets = 1;
 
+include("point.js");
+include("poly_line.js");
+
 sketch.default2d();
 sketch.fsaa = 1;
 
-var RADIUS = 0.1; // circle radius in world units (view height spans 2)
-var points = [];
-var hovered = -1; // index of hovered point
-var dragged = -1; // index of dragged point
+var polylines = []; // polylines[i].points[j]
+var hovered = null; // {i, j} of hovered point
+var dragged = null; // {i, j} of dragged point
 var grab_dx = 0; // pixel offset between mouse and circle center at click
 var grab_dy = 0;
 var vcolor = [1., 1., 1., 1.];
@@ -34,50 +37,24 @@ if (jsarguments.length > 3) {
 	vcolor = [jsarguments[1] / 255., jsarguments[2] / 255., jsarguments[3] / 255., 1.];
 }
 
-function clamp01(v)
-{
-	return Math.min(Math.max(0, v), 1);
-}
-
 function size()
 {
 	return [box.rect[2] - box.rect[0], box.rect[3] - box.rect[1]];
 }
 
-function Point(x, y)
+polylines.push(new PolyLine([new Point(0.5, 0.5), new Point(0.25, 0.25), new Point(0.25, 0.25)]));
+polylines.push(new PolyLine([new Point(0.75, 0.5), new Point(0.25, 0.5)]));
+draw();
+
+function same(a, i, j)
 {
-	this.x = clamp01(x);
-	this.y = clamp01(y);
+	return a != null && a.i == i && a.j == j;
 }
 
-Point.prototype.move = function(x, y)
+function valid(i, j)
 {
-	this.x = clamp01(x);
-	this.y = clamp01(y);
-};
-
-Point.prototype.hit = function(px, py, s)
-{
-	var dx = px - this.x * s[0];
-	var dy = py - this.y * s[1];
-	var r = RADIUS * s[1] / 2;
-	return dx * dx + dy * dy <= r * r;
-};
-
-Point.prototype.draw = function(aspect, filled)
-{
-	with (sketch) {
-		moveto((this.x * 2 - 1) * aspect, 1 - this.y * 2);
-		if (filled)
-			circle(RADIUS);
-		else
-			framecircle(RADIUS);
-	}
-};
-
-points.push(new Point(0.5, 0.5));
-points.push(new Point(0.25, 0.25));
-draw();
+	return i >= 0 && i < polylines.length && j >= 0 && j < polylines[i].points.length;
+}
 
 function draw()
 {
@@ -92,8 +69,15 @@ function draw()
 		glcolor(vcolor);
 		gllinewidth(2);
 	}
-	for (i = 0; i < points.length; i++)
-		points[i].draw(aspect, i == hovered || i == dragged);
+	for (i = 0; i < polylines.length; i++)
+		polylines[i].draw(aspect, filledAt(i));
+}
+
+function filledAt(i)
+{
+	return function(j) {
+		return same(hovered, i, j) || same(dragged, i, j);
+	};
 }
 
 function redraw()
@@ -102,68 +86,86 @@ function redraw()
 	refresh();
 }
 
-function output(i)
+function output(i, j)
 {
-	outlet(0, i, points[i].x, points[i].y);
+	var p = polylines[i].points[j];
+	outlet(0, i, j, p.x, p.y);
 }
 
 function bang()
 {
-	var i;
+	var i, j;
 	redraw();
-	for (i = 0; i < points.length; i++)
-		output(i);
+	for (i = 0; i < polylines.length; i++)
+		for (j = 0; j < polylines[i].points.length; j++)
+			output(i, j);
 }
 
-function add(x, y)
+function add(i, x, y)
 {
-	points.push(new Point(x, y));
+	if (i < 0)
+		return;
+	while (polylines.length <= i)
+		polylines.push(new PolyLine());
+	polylines[i].add(x, y);
 	notifyclients();
 	redraw();
 }
 
-function remove(i)
+function remove(i, j)
 {
-	if (i < 0 || i >= points.length)
-		return;
-	points.splice(i, 1);
-	hovered = dragged = -1;
+	if (arguments.length < 2) {
+		if (i < 0 || i >= polylines.length)
+			return;
+		polylines.splice(i, 1);
+	} else {
+		if (!valid(i, j))
+			return;
+		polylines[i].remove(j);
+	}
+	hovered = dragged = null;
 	notifyclients();
 	redraw();
 }
 
 function clear()
 {
-	points = [];
-	hovered = dragged = -1;
+	polylines = [];
+	hovered = dragged = null;
 	notifyclients();
 	redraw();
 }
 
-function set(i, x, y)
+function set(i, j, x, y)
 {
-	if (i < 0 || i >= points.length)
+	if (!valid(i, j))
 		return;
-	points[i].move(x, y);
+	polylines[i].points[j].move(x, y);
 	notifyclients();
 	redraw();
 }
 
-function list(i, x, y)
+function list(i, j, x, y)
 {
-	set(i, x, y);
-	if (i >= 0 && i < points.length)
-		output(i);
+	set(i, j, x, y);
+	if (valid(i, j))
+		output(i, j);
 }
 
-// pattr state: flat x0 y0 x1 y1 ...
+// pattr state: per row, the point count followed by x y pairs
 function setvalueof()
 {
-	var i;
-	points = [];
-	for (i = 0; i + 1 < arguments.length; i += 2)
-		points.push(new Point(arguments[i], arguments[i + 1]));
-	hovered = dragged = -1;
+	var k = 0;
+	var n, m, line;
+	polylines = [];
+	while (k < arguments.length) {
+		n = arguments[k++];
+		line = new PolyLine();
+		for (m = 0; m < n && k + 1 < arguments.length; m++, k += 2)
+			line.add(arguments[k], arguments[k + 1]);
+		polylines.push(line);
+	}
+	hovered = dragged = null;
 	notifyclients();
 	bang();
 }
@@ -171,9 +173,13 @@ function setvalueof()
 function getvalueof()
 {
 	var v = [];
-	var i;
-	for (i = 0; i < points.length; i++)
-		v.push(points[i].x, points[i].y);
+	var i, j, pts;
+	for (i = 0; i < polylines.length; i++) {
+		pts = polylines[i].points;
+		v.push(pts.length);
+		for (j = 0; j < pts.length; j++)
+			v.push(pts[j].x, pts[j].y);
+	}
 	return v;
 }
 
@@ -189,22 +195,23 @@ function fsaa(v)
 	redraw();
 }
 
-// topmost (last drawn) point under the pixel position, or -1
+// topmost (last drawn) point under the pixel position as {i, j}, or null
 function hitTest(x, y)
 {
 	var s = size();
-	var i;
-	for (i = points.length - 1; i >= 0; i--)
-		if (points[i].hit(x, y, s))
-			return i;
-	return -1;
+	var i, j;
+	for (i = polylines.length - 1; i >= 0; i--)
+		for (j = polylines[i].points.length - 1; j >= 0; j--)
+			if (polylines[i].points[j].hit(x, y, s))
+				return {i: i, j: j};
+	return null;
 }
 
 // mouse events: x, y are in pixels, (0,0) top left
 function onidle(x, y)
 {
 	var h = hitTest(x, y);
-	if (h != hovered) {
+	if (h == null ? hovered != null : !same(hovered, h.i, h.j)) {
 		hovered = h;
 		redraw();
 	}
@@ -213,8 +220,8 @@ onidle.local = 1;
 
 function onidleout()
 {
-	if (hovered != -1) {
-		hovered = -1;
+	if (hovered != null) {
+		hovered = null;
 		redraw();
 	}
 }
@@ -223,10 +230,12 @@ onidleout.local = 1;
 function onclick(x, y)
 {
 	var s = size();
+	var p;
 	dragged = hitTest(x, y);
-	if (dragged != -1) {
-		grab_dx = points[dragged].x * s[0] - x;
-		grab_dy = points[dragged].y * s[1] - y;
+	if (dragged != null) {
+		p = polylines[dragged.i].points[dragged.j];
+		grab_dx = p.x * s[0] - x;
+		grab_dy = p.y * s[1] - y;
 		redraw();
 	}
 }
@@ -236,17 +245,17 @@ function ondrag(x, y, but)
 {
 	var s = size();
 	if (!but) {
-		dragged = -1;
+		dragged = null;
 		hovered = hitTest(x, y);
 		redraw();
 		return;
 	}
-	if (dragged == -1)
+	if (dragged == null)
 		return;
-	points[dragged].move((x + grab_dx) / s[0], (y + grab_dy) / s[1]);
+	polylines[dragged.i].points[dragged.j].move((x + grab_dx) / s[0], (y + grab_dy) / s[1]);
 	notifyclients();
 	redraw();
-	output(dragged);
+	output(dragged.i, dragged.j);
 }
 ondrag.local = 1;
 
