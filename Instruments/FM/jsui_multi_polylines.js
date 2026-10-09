@@ -20,9 +20,9 @@ arguments: circlered circlegreen circleblue (0-255, default white)
 inlets = 1;
 outlets = 1;
 
-include("point.js");
-include("poly_line.js");
-include("colors.js");
+include("_point.js");
+include("_poly_line.js");
+include("_colors.js");
 
 sketch.default2d();
 sketch.fsaa = 1;
@@ -72,7 +72,7 @@ function draw()
 	var i;
 
 	with (sketch) {
-		shapeslice(180, 1);
+		// shapeslice(180, 1);
 		glclearcolor(0, 0, 0, 1);
 		glclear();
 		gllinewidth(2);

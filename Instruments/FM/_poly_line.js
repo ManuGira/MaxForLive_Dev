@@ -1,5 +1,7 @@
 // Ordered list of Points joined by line segments. Requires point.js and the global `sketch`.
 
+include("_point.js");
+
 function PolyLine(points)
 {
 	this.points = points || [];
@@ -65,7 +67,7 @@ PolyLine.prototype.draw = function(s, filled)
 
 	with (sketch) {
 		glcolor(c);
-		gllinewidth(1);
+		gllinewidth(2);
 		for (j = 0; j < this.points.length; j++) {
 			w = this.points[j].toWorld(s);
 			if (j == 0)

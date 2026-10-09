@@ -36,6 +36,28 @@ Point.prototype.setLimits = function(minx, miny, maxx, maxy)
 	this.move(this.x, this.y);
 };
 
+// position as 0-1 fractions of the [min, max] limits (0 when the range is empty)
+Point.prototype.valueX = function()
+{
+	return this.maxx > this.minx ? (this.x - this.minx) / (this.maxx - this.minx) : 0;
+};
+
+Point.prototype.valueY = function()
+{
+	return this.maxy > this.miny ? (this.y - this.miny) / (this.maxy - this.miny) : 0;
+};
+
+Point.prototype.setValue = function(fx, fy)
+{
+	this.move(this.minx + clamp(fx, 0, 1) * (this.maxx - this.minx),
+		this.miny + clamp(fy, 0, 1) * (this.maxy - this.miny));
+};
+
+Point.prototype.setColor = function(c)
+{
+	this.color = c.slice();
+};
+
 // px, py in pixels; s is [width, height] in pixels
 Point.prototype.hit = function(px, py, s)
 {
@@ -66,7 +88,7 @@ Point.prototype.draw = function(s, filled)
 		c[3] *= 0.5;
 	with (sketch) {
 		glcolor(c);
-		gllinewidth(1);
+		gllinewidth(2);
 		moveto(w[0], w[1]);
 		if (filled && this.enabled) {
 			circle(r);

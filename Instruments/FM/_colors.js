@@ -11,7 +11,7 @@ var Colors = (function() {
 		]);
 	}
 
-    var palette = ["ff6b6b", "ffa048", "ffd93d", "4ded9f", "4deeea", "d980fa"]
+    var palette = ["ff544b","66cf5b","008de2","2ae2df","ff8bc6","e8cf2a"]
 	return Object.freeze({
 		RED: rgb(palette[0]),
 		GREEN: rgb(palette[1]),
