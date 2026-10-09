@@ -3,11 +3,47 @@
 function PolyLine(points)
 {
 	this.points = points || [];
+	this.color = Point.DEFAULT_COLOR.slice(); // line color, [r, g, b, a], 0-1
+	this._enabled = true;
+	this._visible = true;
 }
+
+// setting enabled or visible also sets it on every contained point
+Object.defineProperty(PolyLine.prototype, "enabled", {
+	get: function() { return this._enabled; },
+	set: function(v) {
+		var j;
+		this._enabled = v;
+		for (j = 0; j < this.points.length; j++)
+			this.points[j].enabled = v;
+	}
+});
+
+Object.defineProperty(PolyLine.prototype, "visible", {
+	get: function() { return this._visible; },
+	set: function(v) {
+		var j;
+		this._visible = v;
+		for (j = 0; j < this.points.length; j++)
+			this.points[j].visible = v;
+	}
+});
+
+// sets the line color and the color of every point
+PolyLine.prototype.setColor = function(c)
+{
+	var j;
+	this.color = c.slice();
+	for (j = 0; j < this.points.length; j++)
+		this.points[j].color = c.slice();
+};
 
 PolyLine.prototype.add = function(x, y)
 {
-	this.points.push(new Point(x, y));
+	var p = new Point(x, y);
+	p.enabled = this._enabled;
+	p.visible = this._visible;
+	this.points.push(p);
 };
 
 PolyLine.prototype.remove = function(j)
@@ -20,8 +56,16 @@ PolyLine.prototype.remove = function(j)
 PolyLine.prototype.draw = function(aspect, filled)
 {
 	var j, w;
+	var c = this.color.slice();
+
+	if (!this._visible)
+		return;
+	if (!this._enabled)
+		c[3] *= 0.5;
 
 	with (sketch) {
+		glcolor(c);
+		gllinewidth(1);
 		for (j = 0; j < this.points.length; j++) {
 			w = this.points[j].toWorld(aspect);
 			if (j == 0)

@@ -22,6 +22,7 @@ outlets = 1;
 
 include("point.js");
 include("poly_line.js");
+include("colors.js");
 
 sketch.default2d();
 sketch.fsaa = 1;
@@ -31,10 +32,9 @@ var hovered = null; // {i, j} of hovered point
 var dragged = null; // {i, j} of dragged point
 var grab_dx = 0; // pixel offset between mouse and circle center at click
 var grab_dy = 0;
-var vcolor = [1., 1., 1., 1.];
 
 if (jsarguments.length > 3) {
-	vcolor = [jsarguments[1] / 255., jsarguments[2] / 255., jsarguments[3] / 255., 1.];
+	Point.DEFAULT_COLOR = [jsarguments[1] / 255., jsarguments[2] / 255., jsarguments[3] / 255., 1.];
 }
 
 function size()
@@ -43,7 +43,17 @@ function size()
 }
 
 polylines.push(new PolyLine([new Point(0.5, 0.5), new Point(0.25, 0.25), new Point(0.25, 0.25)]));
+polylines[0].setColor(Colors.RED);
 polylines.push(new PolyLine([new Point(0.75, 0.5), new Point(0.25, 0.5)]));
+polylines[1].setColor(Colors.BLUE);
+polylines.push(new PolyLine([new Point(0.75, 0.5), new Point(0.25, 0.5)]));
+polylines[2].setColor(Colors.GREEN);
+polylines.push(new PolyLine([new Point(0.75, 0.5), new Point(0.25, 0.5)]));
+polylines[3].setColor(Colors.MAGENTA);
+polylines.push(new PolyLine([new Point(0.75, 0.5), new Point(0.25, 0.5)]));
+polylines[4].setColor(Colors.CYAN);
+polylines.push(new PolyLine([new Point(0.75, 0.5), new Point(0.25, 0.5)]));
+polylines[5].setColor(Colors.YELLOW);
 draw();
 
 function same(a, i, j)
@@ -66,7 +76,6 @@ function draw()
 		shapeslice(180, 1);
 		glclearcolor(0, 0, 0, 1);
 		glclear();
-		glcolor(vcolor);
 		gllinewidth(2);
 	}
 	for (i = 0; i < polylines.length; i++)
@@ -185,7 +194,10 @@ function getvalueof()
 
 function colour(r, g, b)
 {
-	vcolor = [r / 255., g / 255., b / 255., 1.];
+	var i;
+	Point.DEFAULT_COLOR = [r / 255., g / 255., b / 255., 1.];
+	for (i = 0; i < polylines.length; i++)
+		polylines[i].setColor(Point.DEFAULT_COLOR);
 	redraw();
 }
 
