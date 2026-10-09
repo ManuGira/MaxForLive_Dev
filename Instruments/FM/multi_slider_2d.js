@@ -69,7 +69,6 @@ function valid(i, j)
 function draw()
 {
 	var s = size();
-	var aspect = s[0] / s[1];
 	var i;
 
 	with (sketch) {
@@ -79,7 +78,7 @@ function draw()
 		gllinewidth(2);
 	}
 	for (i = 0; i < polylines.length; i++)
-		polylines[i].draw(aspect, filledAt(i));
+		polylines[i].draw(s, filledAt(i));
 }
 
 function filledAt(i)

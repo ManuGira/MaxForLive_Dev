@@ -53,7 +53,7 @@ PolyLine.prototype.remove = function(j)
 };
 
 // filled(j) is optional and returns true if point j should be drawn filled
-PolyLine.prototype.draw = function(aspect, filled)
+PolyLine.prototype.draw = function(s, filled)
 {
 	var j, w;
 	var c = this.color.slice();
@@ -67,7 +67,7 @@ PolyLine.prototype.draw = function(aspect, filled)
 		glcolor(c);
 		gllinewidth(1);
 		for (j = 0; j < this.points.length; j++) {
-			w = this.points[j].toWorld(aspect);
+			w = this.points[j].toWorld(s);
 			if (j == 0)
 				moveto(w[0], w[1]);
 			else
@@ -75,5 +75,5 @@ PolyLine.prototype.draw = function(aspect, filled)
 		}
 	}
 	for (j = 0; j < this.points.length; j++)
-		this.points[j].draw(aspect, filled ? filled(j) : false);
+		this.points[j].draw(s, filled ? filled(j) : false);
 };

@@ -9,13 +9,13 @@ function Point(x, y)
 {
 	this.x = clamp01(x);
 	this.y = clamp01(y);
-	this.radius = Point.DEFAULT_RADIUS; // world units (view height spans 2)
+	this.radius = Point.DEFAULT_RADIUS; // pixels
 	this.color = Point.DEFAULT_COLOR.slice(); // [r, g, b, a], 0-1
 	this.enabled = true; // disabled: not draggable, never filled, drawn at half alpha
 	this.visible = true; // invisible: not drawn and not draggable
 }
 
-Point.DEFAULT_RADIUS = 0.06;
+Point.DEFAULT_RADIUS = 7; // pixels
 Point.DEFAULT_COLOR = [1., 1., 1., 1.];
 
 Point.prototype.move = function(x, y)
@@ -32,21 +32,23 @@ Point.prototype.hit = function(px, py, s)
 		return false;
 	dx = px - this.x * s[0];
 	dy = py - this.y * s[1];
-	r = this.radius * s[1] / 2;
+	r = this.radius;
 	return dx * dx + dy * dy <= r * r;
 };
 
-Point.prototype.toWorld = function(aspect)
+// s is [width, height] in pixels; returns world coordinates
+Point.prototype.toWorld = function(s)
 {
-	return [(this.x * 2 - 1) * aspect, 1 - this.y * 2];
+	return [(this.x * 2 - 1) * s[0] / s[1], 1 - this.y * 2];
 };
 
-Point.prototype.draw = function(aspect, filled)
+Point.prototype.draw = function(s, filled)
 {
-	var w, c;
+	var w, c, r;
 	if (!this.visible)
 		return;
-	w = this.toWorld(aspect);
+	w = this.toWorld(s);
+	r = this.radius * 2 / s[1]; // view height spans 2 world units
 	c = this.color.slice();
 	if (!this.enabled)
 		c[3] *= 0.5;
@@ -54,11 +56,11 @@ Point.prototype.draw = function(aspect, filled)
 		glcolor(c);
 		gllinewidth(1);
 		moveto(w[0], w[1]);
-		if (filled && this.enabled){
-			circle(this.radius);
-            framecircle(this.radius);
-        } else {
-            framecircle(this.radius);
-        }
+		if (filled && this.enabled) {
+			circle(r);
+			framecircle(r);
+		} else {
+			framecircle(r);
+		}
 	}
 };
