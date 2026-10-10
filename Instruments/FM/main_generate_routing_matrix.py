@@ -11,10 +11,10 @@ def hex2rgb(hex_color: str) -> list:
 
 def generate_routing_matrix_patch(N=2) -> Patch:
     patching_gridspace = GridSpace(x0=10.0, y0=10.0, width=90.0, height=90.0)
-    presentation_gridspace = GridSpace(x0=0.0, y0=0.0, width=27.0, height=27.0)
+    presentation_gridspace = GridSpace(x0=0.0, y0=0.0, width=29.0, height=29.0)
 
     patch = Patch(patching_gridspace)
-    
+   
     # Add field controllers and their labels on the left
     X0, Y0 = 0, 0
 
@@ -58,14 +58,16 @@ def main() -> None:
     HERE = Path(__file__).parent.resolve()
    
     patch: Patch = generate_routing_matrix_patch()
+    patch_dict = patch.dict
+    patch_dict["patcher"]["openinpresentation"] = 1
 
     target_file = HERE / "mg0b.routing_matrix_22.maxpat"
     
-    encoded = MaxJSONEncoder().encode(patch.dict)
+    encoded = MaxJSONEncoder().encode(patch_dict)
     with open(target_file, "wb") as f:
         f.write(encoded.encode('utf-8'))
 
-    print(json.dumps(patch.dict, indent=4))
+    print(json.dumps(patch_dict, indent=4))
 
 
 if __name__ == "__main__":

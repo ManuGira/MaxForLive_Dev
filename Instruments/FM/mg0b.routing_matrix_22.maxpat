@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 50.0, 84.0, 900.0, 600.0 ],
+		"rect" : [ 80.0, 50.0, 900.0, 600.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 1,
 		"default_fontsize" : 12.0,
@@ -44,8 +44,8 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 10.0, 190.0, 124.0, 22.0 ],
-					"presentation_linecount" : 3,
+					"patching_rect" : [ 10.0, 190.0, 80.0, 22.0 ],
+					"presentation_rect" : [ 10.0, 190.0, 80.0, 22.0 ],
 					"text" : "send ---RoutingMatrix"
 				}
 
@@ -61,24 +61,25 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "", "float" ],
 					"parameter_enable" : 1,
-					"patching_rect" : [ 10.0, 10.0, 25.0, 23.0 ],
+					"patching_rect" : [ 10.0, 10.0, 29.0, 23.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 0.0, 0.0, 25.0, 23.0 ],
+					"presentation_rect" : [ 0.0, 0.0, 29.0, 23.0 ],
 					"saved_attribute_attributes" : 					{
+						"valueof" : 						{
+							"parameter_linknames" : 1,
+							"parameter_longname" : "route_0_0",
+							"parameter_mmax" : 127,
+							"parameter_shortname" : "route_0_0",
+							"parameter_type" : 1,
+							"parameter_unitstyle" : 0
+						}
+,
 						"activedialcolor" : 						{
 							"expression" : ""
 						}
 ,
 						"activeneedlecolor" : 						{
 							"expression" : ""
-						}
-,
-						"valueof" : 						{
-							"parameter_linknames" : 1,
-							"parameter_longname" : "route_0_0",
-							"parameter_shortname" : "route_0_0",
-							"parameter_type" : 1,
-							"parameter_unitstyle" : 0
 						}
 
 					}
@@ -96,6 +97,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 10.0, 46.0, 80.0, 22.0 ],
+					"presentation_rect" : [ 10.0, 46.0, 80.0, 22.0 ],
 					"text" : "prepend 0 0"
 				}
 
@@ -111,24 +113,25 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "", "float" ],
 					"parameter_enable" : 1,
-					"patching_rect" : [ 100.0, 10.0, 25.0, 23.0 ],
+					"patching_rect" : [ 100.0, 10.0, 29.0, 23.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 27.0, 0.0, 25.0, 23.0 ],
+					"presentation_rect" : [ 29.0, 0.0, 29.0, 23.0 ],
 					"saved_attribute_attributes" : 					{
+						"valueof" : 						{
+							"parameter_linknames" : 1,
+							"parameter_longname" : "route_1_0",
+							"parameter_mmax" : 127,
+							"parameter_shortname" : "route_1_0",
+							"parameter_type" : 1,
+							"parameter_unitstyle" : 0
+						}
+,
 						"activedialcolor" : 						{
 							"expression" : ""
 						}
 ,
 						"activeneedlecolor" : 						{
 							"expression" : ""
-						}
-,
-						"valueof" : 						{
-							"parameter_linknames" : 1,
-							"parameter_longname" : "route_1_0",
-							"parameter_shortname" : "route_1_0",
-							"parameter_type" : 1,
-							"parameter_unitstyle" : 0
 						}
 
 					}
@@ -146,6 +149,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 100.0, 46.0, 80.0, 22.0 ],
+					"presentation_rect" : [ 100.0, 46.0, 80.0, 22.0 ],
 					"text" : "prepend 1 0"
 				}
 
@@ -161,24 +165,25 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "", "float" ],
 					"parameter_enable" : 1,
-					"patching_rect" : [ 10.0, 100.0, 25.0, 23.0 ],
+					"patching_rect" : [ 10.0, 100.0, 29.0, 23.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 0.0, 27.0, 25.0, 23.0 ],
+					"presentation_rect" : [ 0.0, 29.0, 29.0, 23.0 ],
 					"saved_attribute_attributes" : 					{
+						"valueof" : 						{
+							"parameter_linknames" : 1,
+							"parameter_longname" : "route_0_1",
+							"parameter_mmax" : 127,
+							"parameter_shortname" : "route_0_1",
+							"parameter_type" : 1,
+							"parameter_unitstyle" : 0
+						}
+,
 						"activedialcolor" : 						{
 							"expression" : ""
 						}
 ,
 						"activeneedlecolor" : 						{
 							"expression" : ""
-						}
-,
-						"valueof" : 						{
-							"parameter_linknames" : 1,
-							"parameter_longname" : "route_0_1",
-							"parameter_shortname" : "route_0_1",
-							"parameter_type" : 1,
-							"parameter_unitstyle" : 0
 						}
 
 					}
@@ -196,6 +201,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 10.0, 136.0, 80.0, 22.0 ],
+					"presentation_rect" : [ 10.0, 136.0, 80.0, 22.0 ],
 					"text" : "prepend 0 1"
 				}
 
@@ -211,24 +217,25 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "", "float" ],
 					"parameter_enable" : 1,
-					"patching_rect" : [ 100.0, 100.0, 25.0, 23.0 ],
+					"patching_rect" : [ 100.0, 100.0, 29.0, 23.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 27.0, 27.0, 25.0, 23.0 ],
+					"presentation_rect" : [ 29.0, 29.0, 29.0, 23.0 ],
 					"saved_attribute_attributes" : 					{
+						"valueof" : 						{
+							"parameter_linknames" : 1,
+							"parameter_longname" : "route_1_1",
+							"parameter_mmax" : 127,
+							"parameter_shortname" : "route_1_1",
+							"parameter_type" : 1,
+							"parameter_unitstyle" : 0
+						}
+,
 						"activedialcolor" : 						{
 							"expression" : ""
 						}
 ,
 						"activeneedlecolor" : 						{
 							"expression" : ""
-						}
-,
-						"valueof" : 						{
-							"parameter_linknames" : 1,
-							"parameter_longname" : "route_1_1",
-							"parameter_shortname" : "route_1_1",
-							"parameter_type" : 1,
-							"parameter_unitstyle" : 0
 						}
 
 					}
@@ -246,6 +253,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 100.0, 136.0, 80.0, 22.0 ],
+					"presentation_rect" : [ 100.0, 136.0, 80.0, 22.0 ],
 					"text" : "prepend 1 1"
 				}
 
@@ -260,29 +268,15 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "PrependBox-2", 0 ],
-					"source" : [ "AUTOGENERATED-DialBox-2", 1 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "PrependBox-3", 0 ],
-					"source" : [ "AUTOGENERATED-DialBox-3", 1 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "PrependBox-4", 0 ],
-					"source" : [ "AUTOGENERATED-DialBox-4", 1 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "SendBox-1", 0 ],
 					"source" : [ "PrependBox-1", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "PrependBox-2", 0 ],
+					"source" : [ "AUTOGENERATED-DialBox-2", 1 ]
 				}
 
 			}
@@ -295,8 +289,22 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "PrependBox-3", 0 ],
+					"source" : [ "AUTOGENERATED-DialBox-3", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "SendBox-1", 0 ],
 					"source" : [ "PrependBox-3", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "PrependBox-4", 0 ],
+					"source" : [ "AUTOGENERATED-DialBox-4", 1 ]
 				}
 
 			}

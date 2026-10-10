@@ -249,7 +249,7 @@ class Patch:
                     "modernui": 1
                 },
                 "classnamespace": "box",
-                "rect": [50.0, 50.0, 900.0, 600.0],
+                "rect": [80.0, 50.0, 900.0, 600.0],
                 "bglocked": 0,
                 "openinpresentation": 0,
                 "default_fontsize": 12.0,
@@ -348,7 +348,7 @@ class DialBox(MaxBox):
                 "numoutlets": 2,
                 "outlettype": ["", "float"],
                 "parameter_enable": 1,
-                "patching_rect": [0.0, 0.0, 25.0, 23.0],
+                "patching_rect": [0.0, 0.0, 29.0, 23.0],
                 "saved_attribute_attributes": {
                     "valueof": {
                         "parameter_linknames": 1,

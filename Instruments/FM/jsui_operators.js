@@ -106,3 +106,4 @@ function getvalueof()
 		v.push(sliders[i].valueX(), sliders[i].valueY());
 	return v;
 }
+widget.changed();
