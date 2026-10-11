@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 2244.0, 149.0, 731.0, 575.0 ],
+		"rect" : [ 2244.0, 149.0, 731.0, 697.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -108,7 +108,7 @@
 					"color" : [ 0.611764705882353, 1.0, 0.435294117647059, 1.0 ],
 					"id" : "obj-10",
 					"maxclass" : "newobj",
-					"numinlets" : 2,
+					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 225.0, 390.0, 120.0, 22.0 ],
@@ -124,7 +124,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 593.0, 331.0, 103.0, 22.0 ]
+					"patching_rect" : [ 593.0, 331.0, 103.0, 22.0 ],
+					"text" : "OPR OPG"
 				}
 
 			}
@@ -219,6 +220,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 38.0, 523.0, 32.0, 22.0 ],
+					"text" : "Mod",
 					"textcolor" : [ 1.0, 0.956862745098039, 0.329411764705882, 1.0 ]
 				}
 
@@ -255,6 +257,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 224.5, 331.0, 42.0, 22.0 ],
+					"text" : "Signal",
 					"textcolor" : [ 1.0, 0.956862745098039, 0.329411764705882, 1.0 ]
 				}
 
@@ -321,18 +324,8 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-10", 0 ],
-					"midpoints" : [ 234.0, 354.0, 234.5, 354.0 ],
-					"order" : 1,
-					"source" : [ "obj-18", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "obj-13", 0 ],
 					"midpoints" : [ 234.0, 372.0, 369.5, 372.0 ],
-					"order" : 0,
 					"source" : [ "obj-18", 0 ]
 				}
 
@@ -401,9 +394,9 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-10", 1 ],
-					"midpoints" : [ 516.5, 375.0, 335.5, 375.0 ],
-					"order" : 0,
+					"destination" : [ "obj-10", 0 ],
+					"midpoints" : [ 516.5, 375.0, 234.5, 375.0 ],
+					"order" : 1,
 					"source" : [ "obj-9", 0 ]
 				}
 
@@ -421,7 +414,7 @@
 				"patchline" : 				{
 					"destination" : [ "obj-26", 2 ],
 					"midpoints" : [ 516.5, 585.0, 323.5, 585.0 ],
-					"order" : 1,
+					"order" : 0,
 					"source" : [ "obj-9", 0 ]
 				}
 
@@ -449,7 +442,14 @@
 				}
 
 			}
- ]
+ ],
+		"saved_attribute_attributes" : 		{
+			"default_plcolor" : 			{
+				"expression" : ""
+			}
+
+		}
+
 	}
 
 }

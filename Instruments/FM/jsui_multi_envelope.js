@@ -20,6 +20,19 @@ var SEGMENT = 0.33; // max x travel of p1, p2 and p4
 var SUSTAIN_END = 0.66; // x of p3 and min x of p4
 var envelopes = [];
 
+// Convert ADSR values from [0-1] to millisecond for attack, decay, and release; sustain remains 0-1
+var adsrScale = [1000.0, 1000.0, 1.0, 1000.0];
+
+function scaleADSROutput(a, d, s, r)
+{
+	return [a * adsrScale[0], d * adsrScale[1], s * adsrScale[2], r * adsrScale[3]];
+}
+
+function scaleADSRInput(a, d, s, r)
+{
+	return [a / adsrScale[0], d / adsrScale[1], s / adsrScale[2], r / adsrScale[3]];
+}
+
 // keeps the points of env consistent after point j moved
 function constrain(env, j)
 {
@@ -70,7 +83,12 @@ function makeEnvelope(color)
 function output(i)
 {
 	var p = envelopes[i].points;
-	outlet(0, i, p[1].valueX(), p[2].valueX(), 1 - p[2].valueY(), p[4].valueX());
+	var a01 = p[1].valueX();
+	var d01 = p[2].valueX();
+	var s01 = 1 - p[2].valueY();
+	var r01 = p[4].valueX();
+	[a, d, s, r] = scaleADSROutput(a01, d01, s01, r01);
+	outlet(0, i, a, d, s, r);
 }
 
 widget.output = function(p) {
@@ -103,6 +121,7 @@ function visible(i, v)
 
 function set(i, a, d, s, r)
 {
+	[a, d, s, r] = scaleADSRInput(a, d, s, r);
 	if (i < 0 || i >= envelopes.length)
 		return;
 	setEnvelope(envelopes[i], a, d, s, r);
