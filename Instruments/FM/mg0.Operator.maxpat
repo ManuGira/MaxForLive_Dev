@@ -40,40 +40,29 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
-					"id" : "obj-6",
-					"linecount" : 6,
-					"maxclass" : "comment",
+					"color" : [ 0.611764705882353, 1.0, 0.435294117647059, 1.0 ],
+					"id" : "obj-12",
+					"maxclass" : "newobj",
 					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 950.0, 293.0, 210.0, 87.0 ],
-					"text" : "Velocity normalized to [0,1] range.\n\nEnvelope is triggered on \"note on\" (velocity is strictly positive). Envelope is released on \"note off\" (when velocity == 0.0)",
-					"textcolor" : [ 1.0, 0.588235294117647, 0.317647058823529, 1.0 ]
+					"numoutlets" : 1,
+					"outlettype" : [ "signal" ],
+					"patching_rect" : [ 154.0, 771.0, 129.0, 22.0 ],
+					"text" : "mg0.receive~ AmpEnv",
+					"textcolor" : [ 0.611764705882353, 1.0, 0.435294117647059, 1.0 ]
 				}
 
 			}
 , 			{
 				"box" : 				{
 					"fontsize" : 16.0,
-					"id" : "obj-81",
+					"id" : "obj-14",
+					"linecount" : 2,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 918.0, 267.0, 68.0, 24.0 ],
-					"text" : "Velocity",
-					"textcolor" : [ 1.0, 0.588235294117647, 0.317647058823529, 1.0 ]
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"comment" : "",
-					"id" : "obj-80",
-					"index" : 3,
-					"maxclass" : "inlet",
-					"numinlets" : 0,
-					"numoutlets" : 1,
-					"outlettype" : [ "int" ],
-					"patching_rect" : [ 918.0, 294.5, 30.0, 30.0 ]
+					"patching_rect" : [ 154.0, 726.0, 155.25, 42.0 ],
+					"text" : "Amp Envelope (receive~ ID)",
+					"textcolor" : [ 0.725490196078431, 0.847058823529412, 0.368627450980392, 1.0 ]
 				}
 
 			}
@@ -146,20 +135,6 @@
 , 			{
 				"box" : 				{
 					"color" : [ 0.611764705882353, 1.0, 0.435294117647059, 1.0 ],
-					"id" : "obj-63",
-					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 319.0, 768.0, 122.0, 22.0 ],
-					"text" : "mg0.receive AmpEnv",
-					"textcolor" : [ 0.611764705882353, 1.0, 0.435294117647059, 1.0 ]
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"color" : [ 0.611764705882353, 1.0, 0.435294117647059, 1.0 ],
 					"id" : "obj-61",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
@@ -173,30 +148,6 @@
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-50",
-					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 4,
-					"outlettype" : [ "float", "float", "float", "float" ],
-					"patching_rect" : [ 319.0, 798.0, 74.0, 22.0 ],
-					"text" : "unpack f f f f"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-39",
-					"maxclass" : "newobj",
-					"numinlets" : 11,
-					"numoutlets" : 3,
-					"outlettype" : [ "signal", "signal", "" ],
-					"patching_rect" : [ 255.0, 846.0, 124.0, 22.0 ],
-					"text" : "live.adsr~"
-				}
-
-			}
-, 			{
-				"box" : 				{
 					"id" : "obj-22",
 					"maxclass" : "newobj",
 					"numinlets" : 2,
@@ -204,21 +155,6 @@
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 30.0, 907.0, 29.5, 22.0 ],
 					"text" : "*~"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"fontsize" : 16.0,
-					"id" : "obj-29",
-					"linecount" : 2,
-					"maxclass" : "comment",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 319.0, 723.0, 155.25, 42.0 ],
-					"presentation_linecount" : 2,
-					"text" : "Amp Envelope (receive ID)",
-					"textcolor" : [ 0.725490196078431, 0.847058823529412, 0.368627450980392, 1.0 ]
 				}
 
 			}
@@ -329,7 +265,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 399.0, 416.0, 74.0, 22.0 ],
-					"text" : "69"
+					"text" : "67"
 				}
 
 			}
@@ -544,7 +480,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 181.0, 490.0, 74.0, 22.0 ],
-					"text" : "69."
+					"text" : "67."
 				}
 
 			}
@@ -584,7 +520,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 661.0, 988.0, 75.0, 22.0 ],
-					"text" : "112."
+					"text" : "110."
 				}
 
 			}
@@ -650,6 +586,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-22", 1 ],
+					"source" : [ "obj-12", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-21", 0 ],
 					"source" : [ "obj-16", 0 ]
 				}
@@ -657,16 +600,16 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-61", 0 ],
-					"order" : 6,
+					"destination" : [ "obj-12", 0 ],
+					"order" : 4,
 					"source" : [ "obj-18", 0 ]
 				}
 
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-63", 0 ],
-					"order" : 4,
+					"destination" : [ "obj-61", 0 ],
+					"order" : 6,
 					"source" : [ "obj-18", 0 ]
 				}
 
@@ -743,13 +686,6 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-22", 1 ],
-					"source" : [ "obj-39", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "obj-45", 1 ],
 					"order" : 1,
 					"source" : [ "obj-47", 1 ]
@@ -784,34 +720,6 @@
 				"patchline" : 				{
 					"destination" : [ "obj-47", 0 ],
 					"source" : [ "obj-5", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-39", 4 ],
-					"source" : [ "obj-50", 3 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-39", 3 ],
-					"source" : [ "obj-50", 2 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-39", 2 ],
-					"source" : [ "obj-50", 1 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-39", 1 ],
-					"source" : [ "obj-50", 0 ]
 				}
 
 			}
@@ -870,13 +778,6 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-50", 0 ],
-					"source" : [ "obj-63", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "obj-60", 0 ],
 					"source" : [ "obj-64", 0 ]
 				}
@@ -917,13 +818,6 @@
 					"destination" : [ "obj-52", 1 ],
 					"order" : 0,
 					"source" : [ "obj-79", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-39", 0 ],
-					"source" : [ "obj-80", 0 ]
 				}
 
 			}
