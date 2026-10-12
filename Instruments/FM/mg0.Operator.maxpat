@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 2076.0, 129.0, 1331.0, 785.0 ],
+		"rect" : [ 1940.0, 227.0, 1294.0, 563.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -46,7 +46,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 950.0, 293.0, 210.0, 87.0 ],
-					"presentation_linecount" : 12,
 					"text" : "Velocity normalized to [0,1] range.\n\nEnvelope is triggered on \"note on\" (velocity is strictly positive). Envelope is released on \"note off\" (when velocity == 0.0)",
 					"textcolor" : [ 1.0, 0.588235294117647, 0.317647058823529, 1.0 ]
 				}
@@ -73,7 +72,7 @@
 					"maxclass" : "inlet",
 					"numinlets" : 0,
 					"numoutlets" : 1,
-					"outlettype" : [ "" ],
+					"outlettype" : [ "int" ],
 					"patching_rect" : [ 918.0, 294.5, 30.0, 30.0 ]
 				}
 
@@ -191,7 +190,7 @@
 					"numinlets" : 11,
 					"numoutlets" : 3,
 					"outlettype" : [ "signal", "signal", "" ],
-					"patching_rect" : [ 244.0, 843.0, 124.0, 22.0 ],
+					"patching_rect" : [ 255.0, 846.0, 124.0, 22.0 ],
 					"text" : "live.adsr~"
 				}
 
@@ -217,6 +216,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 319.0, 723.0, 155.25, 42.0 ],
+					"presentation_linecount" : 2,
 					"text" : "Amp Envelope (receive ID)",
 					"textcolor" : [ 0.725490196078431, 0.847058823529412, 0.368627450980392, 1.0 ]
 				}
@@ -378,6 +378,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 1040.0, 547.0, 89.0, 22.0 ],
+					"text" : "OPR",
 					"textcolor" : [ 1.0, 0.956862745098039, 0.329411764705882, 1.0 ]
 				}
 
@@ -583,7 +584,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 661.0, 988.0, 75.0, 22.0 ],
-					"text" : "69."
+					"text" : "112."
 				}
 
 			}

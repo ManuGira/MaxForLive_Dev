@@ -22,3 +22,4 @@ var Colors = (function() {
 		YELLOW: rgb(palette[5])
 	});
 })();
+

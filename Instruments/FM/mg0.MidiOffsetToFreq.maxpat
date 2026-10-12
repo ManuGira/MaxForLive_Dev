@@ -89,11 +89,12 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-28",
+					"linecount" : 9,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 4.0, 250.0, 116.0, 20.0 ],
-					"text" : "Smooth transition"
+					"patching_rect" : [ 4.0, 250.0, 116.0, 127.0 ],
+					"text" : "Smooth transition\nwith \"slide~ 900 900\"\n\nNB: Cest top quand on fait des sweep, mais pas pour jouer du midi alors j'ai enlevé"
 				}
 
 			}
@@ -225,7 +226,7 @@
 					"numinlets" : 3,
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
-					"patching_rect" : [ 129.0, 249.0, 87.0, 22.0 ],
+					"patching_rect" : [ 172.0, 320.0, 87.0, 22.0 ],
 					"text" : "slide~ 960 960"
 				}
 
@@ -269,13 +270,6 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-8", 0 ],
-					"source" : [ "obj-102", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-102", 0 ],
 					"source" : [ "obj-105", 0 ]
 				}
 

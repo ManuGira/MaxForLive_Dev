@@ -58,7 +58,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 142.0, 358.0, 180.0, 24.0 ],
+					"patching_rect" : [ 191.0, 467.0, 180.0, 24.0 ],
 					"text" : "Send resulting pitch"
 				}
 
@@ -70,7 +70,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 142.0, 388.0, 229.0, 100.0 ],
+					"patching_rect" : [ 191.0, 497.0, 229.0, 100.0 ],
 					"text" : "For some reasons starting a message with \";\" makes it act as a send. \n\nUnlike send~, receive~ and receive objects, the send object address can't be set dynamically. That's why I go with this weird message magic"
 				}
 
@@ -82,7 +82,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 17.0, 377.0, 125.0, 22.0 ],
+					"patching_rect" : [ 17.0, 502.0, 163.0, 22.0 ],
 					"textcolor" : [ 1.0, 0.956862745098039, 0.329411764705882, 1.0 ]
 				}
 
@@ -94,7 +94,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 123.0, 328.0, 117.0, 22.0 ],
+					"patching_rect" : [ 165.0, 424.0, 117.0, 22.0 ],
 					"text" : "sprintf \\; ---%s%s \\$1"
 				}
 
@@ -106,7 +106,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 123.0, 216.0, 90.0, 22.0 ],
+					"patching_rect" : [ 149.0, 236.0, 108.0, 22.0 ],
 					"text" : "loadmess #1"
 				}
 
@@ -119,7 +119,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 6.0, 50.0, 274.0, 114.0 ],
+					"patching_rect" : [ 6.0, 50.0, 283.0, 114.0 ],
 					"text" : "helper to create a send object with a static name (passed as parameter #1) suffixed with an ID. This patcher is meant to be loaded in a subpatch  that is loaded multiple time. If each instance of the subpatch has a different ID which is passed to mg0.send, then they all have a different send\n\nAt loading, Give a name and an id with the inlets"
 				}
 
@@ -142,7 +142,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 123.0, 194.0, 69.0, 20.0 ],
+					"patching_rect" : [ 149.0, 212.0, 69.0, 20.0 ],
 					"text" : "Dst name"
 				}
 
@@ -153,7 +153,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 244.0, 230.0, 44.0, 20.0 ],
+					"patching_rect" : [ 267.0, 304.0, 44.0, 20.0 ],
 					"text" : "ID"
 				}
 
@@ -176,7 +176,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "bang", "" ],
-					"patching_rect" : [ 210.0, 284.0, 31.0, 22.0 ],
+					"patching_rect" : [ 233.0, 337.0, 31.0, 22.0 ],
 					"text" : "t b s"
 				}
 
@@ -190,7 +190,7 @@
 					"numinlets" : 0,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 210.0, 225.0, 30.0, 30.0 ]
+					"patching_rect" : [ 233.0, 299.0, 30.0, 30.0 ]
 				}
 
 			}
@@ -237,14 +237,7 @@
 				}
 
 			}
- ],
-		"saved_attribute_attributes" : 		{
-			"default_plcolor" : 			{
-				"expression" : ""
-			}
-
-		}
-
+ ]
 	}
 
 }
