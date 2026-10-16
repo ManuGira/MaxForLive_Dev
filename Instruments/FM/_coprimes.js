@@ -62,7 +62,7 @@ function generate_simple_ratios(lowest_harmonicity)
 
     // log the pair with lowest harmonicity value
     if (pairs.length > 0) {
-        post("Lowest harmonicity pair: " + pairs[pairs.length - 1] + "\n");
+        // post("Lowest harmonicity pair: " + pairs[pairs.length - 1] + "\n");
     }
 
     // keep only the pairs with harmonicity value greater than lowest_harmonicity
@@ -73,7 +73,7 @@ function generate_simple_ratios(lowest_harmonicity)
     // log all tuples for debugging
     for (var i = 0; i < pairs.length; i++) {
         var tuple = pairs[i];
-        post(tuple + "\n");
+        // post(tuple + "\n");
     }
 
     return pairs;

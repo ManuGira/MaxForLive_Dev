@@ -20,12 +20,9 @@ include("_widget.js");
 include("_colors.js");
 include("_coprimes.js");
 
-Point.DEFAULT_COLOR = Colors.RED;
-
-var A = 1; // radius growth per unit of t in spiral space: the turns are spaced by A * TURN
 var TURN = 12; // units of t for one full turn
 var TMAX = 127; // t at the outer end of the spiral
-var MARGIN = 0; // pixels kept free between the spiral end and the view edge
+var MARGIN = 5; // pixels kept free between the spiral end and the view edge
 var STEPS = TMAX; // samples used to draw the spiral
 var REFINE = TURN / 4; // search half-width around the analytic estimate, in t
 var RAD_PER_PITCH = 2 * Math.PI / TURN;
@@ -47,7 +44,8 @@ Spaces:
 // pixels per unit of spiral space so that the spiral end fits the view of size s
 function pixelsPerUnit(s)
 {
-	return Math.max(0, Math.min(s[0], s[1]) / 2 - Point.DEFAULT_RADIUS - MARGIN) / (A * TMAX);
+	var minSide = Math.min(s[0], s[1]);
+	return Math.max(0, minSide / 2 - MARGIN) / TMAX;
 }
 
 function pitch2Rad(pitch){
@@ -62,7 +60,7 @@ function rad2Pitch(rad){
 function pitch2Spiral(pitch)
 {
 	var rad = pitch2Rad(pitch);
-	return [A * pitch * Math.cos(rad), A * pitch * Math.sin(rad)];
+	return [pitch * Math.cos(rad), pitch * Math.sin(rad)];
 }
 
 // spiral space -> pitch space: t in [0, TMAX] of the spiral point nearest to (dx, dy).
@@ -135,41 +133,30 @@ widget.add(spiral);
 
 var HARMONICITY_THRESHOLD = -7; // lowest harmonicity kept; ratios range from this (alpha 0) to 0 (alpha 1)
 
-// one line per simple ratio [h, i, j], from the center along the angle of the ratio i/j:
-// log2(i/j) turns, i.e. the spiral angle of the pitch TURN*log2(i/j)
-var ratioLines = {
-	points: [], // not draggable
-	color: Colors.MAGENTA.slice(),
-	ratios: generate_simple_ratios(HARMONICITY_THRESHOLD),
+// Simple ratios [h, i, j], shared by all the points: one line per ratio, with the angle of the
+// ratio i/j (log2(i/j) turns) relative to the point and an alpha given by the harmonicity h.
+var RATIOS = generate_simple_ratios(HARMONICITY_THRESHOLD);
+var ALPHAS = RATIOS.map(function(r) {
+    return clamp(1 - r[0] / HARMONICITY_THRESHOLD, 0, 1);
+});
+var RADIANS = RATIOS.map(function(r) {
+    return pitch2Rad(TURN * Math.log(r[1] / r[2]) / Math.log(2));
+});
 
-	draw: function(s)
-	{
-		var k, rad, q;
-		var o = spiral2Pixel(0, 0);
-		var c = this.color.slice();
-		with (sketch) {
-			gllinewidth(1);
-			for (k = 0; k < this.ratios.length; k++) {
-				// harmonicity from HARMONICITY_THRESHOLD..0 remapped to alpha 0..1
-				c[3] = clamp(1 - this.ratios[k][0] / HARMONICITY_THRESHOLD, 0, 1);
-				glcolor(c);
-				rad = pitch2Rad(TURN * Math.log(this.ratios[k][1] / this.ratios[k][2]) / Math.log(2));
-				q = spiral2Pixel(A * TMAX * Math.cos(rad), A * TMAX * Math.sin(rad));
-				moveto((o[0] * 2 - s[0]) / s[1], 1 - o[1] * 2 / s[1]);
-				lineto((q[0] * 2 - s[0]) / s[1], 1 - q[1] * 2 / s[1]);
-			}
-		}
-	}
-};
-widget.add(ratioLines);
-
-var handle = new Point(0.5, 0.5);
-handle.radius = 4;
-handle.t = 0; // position along the spiral: turns * TURN
+// Point constrained on the spiral, drawn with its set of lines: the lines start at the center and
+// are rotated so that the strongest one (ratio 1/1) passes through the point.
+function SpiralPoint(t)
+{
+	Point.call(this, 0.5, 0.5);
+	this.t = t !== undefined ? t : 0; // position along the spiral: turns * TURN
+	this.radius = 4;
+}
+SpiralPoint.prototype = Object.create(Point.prototype);
+SpiralPoint.prototype.constructor = SpiralPoint;
 
 // moves the point to the spiral position of the current t for a view of size s
 // (drawn at the end of the spiral if t is beyond it, the value is kept)
-handle.place = function(s)
+SpiralPoint.prototype.place = function(s)
 {
 	var p = pitch2Spiral(Math.min(this.t, TMAX));
 	var q = spiral2Pixel(p[0], p[1]);
@@ -178,7 +165,7 @@ handle.place = function(s)
 };
 
 // x, y are normalized to the view size: the point goes to the nearest spiral point
-handle.move = function(x, y)
+SpiralPoint.prototype.move = function(x, y)
 {
 	var s = size();
 	var p = pixel2Spiral(x * s[0], y * s[1]);
@@ -186,13 +173,35 @@ handle.move = function(x, y)
 	this.place(s);
 };
 
+SpiralPoint.prototype.drawLines = function(s)
+{
+	var k, rad, q;
+	var offset = pitch2Rad(this.t) - pitch2Rad(0);
+	var o = spiral2Pixel(0, 0);
+	var c = this.color.slice();
+	with (sketch) {
+		gllinewidth(1);
+		for (k = 0; k < RATIOS.length; k++) {
+			// harmonicity from HARMONICITY_THRESHOLD..0 remapped to alpha 0..1
+			c[3] = ALPHAS[k];
+			glcolor(c);
+			rad = offset + RADIANS[k];
+			q = spiral2Pixel(A * TMAX * Math.cos(rad), A * TMAX * Math.sin(rad));
+			moveto((o[0] * 2 - s[0]) / s[1], 1 - o[1] * 2 / s[1]);
+			lineto((q[0] * 2 - s[0]) / s[1], 1 - q[1] * 2 / s[1]);
+		}
+	}
+};
+
 // the spiral depends on the view size: keep the point on it after a resize
-handle.draw = function(s, filled)
+SpiralPoint.prototype.draw = function(s, filled)
 {
 	this.place(s);
+	this.drawLines(s);
 	Point.prototype.draw.call(this, s, filled);
 };
 
+var handle = new SpiralPoint(60);
 widget.add(handle);
 
 widget.output = function() {
