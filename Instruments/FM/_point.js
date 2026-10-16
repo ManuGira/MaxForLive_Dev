@@ -64,8 +64,10 @@ Point.prototype.hit = function(px, py, s)
 	var dx, dy, r;
 	if (!this.visible || !this.enabled)
 		return false;
-	dx = px - this.x * s[0];
-	dy = py - this.y * s[1];
+
+
+	dx = (px+0.5) - this.x * s[0];
+	dy = (py+0.5) - this.y * s[1];
 	r = this.radius;
 	return dx * dx + dy * dy <= r * r;
 };
@@ -73,7 +75,10 @@ Point.prototype.hit = function(px, py, s)
 // s is [width, height] in pixels; returns world coordinates
 Point.prototype.toWorld = function(s)
 {
-	return [(this.x * 2 - 1) * s[0] / s[1], 1 - this.y * 2];
+	var width = s[0];
+	var height = s[1];
+	var aspect = width / height;
+	return [aspect * (2 * this.x - 1), -(2 * this.y - 1)];
 };
 
 Point.prototype.draw = function(s, filled)
@@ -86,10 +91,11 @@ Point.prototype.draw = function(s, filled)
 	c = this.color.slice();
 	if (!this.enabled)
 		c[3] *= 0.5;
+	var pxx = 0*1/s[0]; // todo: remove me
 	with (sketch) {
 		glcolor(c);
 		gllinewidth(2);
-		moveto(w[0], w[1]);
+		moveto(w[0]+pxx, w[1]-pxx);
 		if (filled && this.enabled) {
 			circle(r);
 			framecircle(r);

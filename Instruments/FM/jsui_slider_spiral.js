@@ -1,98 +1,111 @@
 /*
 
 1d slider moving along a spiral, centered in the view, on a black background.
-Outputs the slider value normalized to 0-1 (0 = center of the spiral, 1 = outer end).
+Outputs t, the position along the spiral: number of turns * TURN (12 per turn), from 0 at the
+center to TMAX at the outer end. It is not normalized to 0-1.
 The point is always constrained on the spiral.
 
-spiral: angle(t) = 2*pi*t/TURN, radius(t) = A*t (in pixels), counter-clockwise.
-t goes from 0 to the value where the spiral reaches the edge of the view.
+spiral: angle(t) = 2*pi*t/TURN, radius(t) = A*t, counter-clockwise. The spiral is scaled to the
+view size so that it always fits (see the spaces below).
 
 messages:
-	float / int v      set value (0-1) and output
-	set v              set value, no output
-	bang               output value
+	float / int t      set t and output
+	set t              set t, no output
+	bang               output t
 	colour r g b       color (0-255)
 
 */
 
 include("_widget.js");
 include("_colors.js");
+include("_coprimes.js");
 
 Point.DEFAULT_COLOR = Colors.RED;
 
-var A = 10; // radius growth per unit of t, in pixels
+var A = 1; // radius growth per unit of t in spiral space: the turns are spaced by A * TURN
 var TURN = 12; // units of t for one full turn
-var MARGIN = 3; // pixels kept free between the spiral end and the view edge
-var STEPS = 400; // samples used to draw the spiral
+var TMAX = 127; // t at the outer end of the spiral
+var MARGIN = 0; // pixels kept free between the spiral end and the view edge
+var STEPS = TMAX; // samples used to draw the spiral
 var REFINE = TURN / 4; // search half-width around the analytic estimate, in t
+var RAD_PER_PITCH = 2 * Math.PI / TURN;
 
-// largest t whose spiral point stays inside the view
-function tMax(s)
+
+function clamp(v, lo, hi)
 {
-	return Math.max(0, (Math.min(s[0], s[1]) / 2 - Point.DEFAULT_RADIUS - MARGIN) / A);
+	return Math.min(Math.max(lo, v), hi);
 }
 
-// pixel position relative to the view center (x right, y down) of the spiral at t
-function spiralPixel(t)
+/*
+Spaces:
+	pixel space   the GUI in pixels as displayed, (0,0) top left, x right, y down
+	spiral space  origin at the spiral center, x right, y up, ranging from -A*TMAX to A*TMAX
+	              (with A = 1 the turns are spaced by 12); spiral(t) = A*t*(cos a, sin a), a = 2*pi*t/TURN
+	pitch space   1d position t along the spiral, ranging from 0 to TMAX
+*/
+
+// pixels per unit of spiral space so that the spiral end fits the view of size s
+function pixelsPerUnit(s)
 {
-	var a = 2 * Math.PI * t / TURN;
-	return [A * t * Math.cos(a), -A * t * Math.sin(a)];
+	return Math.max(0, Math.min(s[0], s[1]) / 2 - Point.DEFAULT_RADIUS - MARGIN) / (A * TMAX);
 }
 
-// t in [0, tmax] of the spiral point nearest to the pixel (dx, dy), relative to the view center.
-// The angle phi of the pixel gives the spiral points at that angle, one per turn; the turn
+function pitch2Rad(pitch){
+	return Math.PI/2 - pitch * RAD_PER_PITCH;
+}
+
+function rad2Pitch(rad){
+	return (Math.PI/2 - rad) / RAD_PER_PITCH;
+}
+
+// pitch space -> spiral space: [dx, dy]
+function pitch2Spiral(pitch)
+{
+	var rad = pitch2Rad(pitch);
+	return [A * pitch * Math.cos(rad), A * pitch * Math.sin(rad)];
+}
+
+// spiral space -> pitch space: t in [0, TMAX] of the spiral point nearest to (dx, dy).
+// The angle phi of (dx, dy) gives the spiral points at that angle, one per turn; the turn
 // index is found from the radius gap; the neighbouring turns are refined locally and the closest
 // is kept.
-function nearestT(dx, dy, tmax)
+function spiral2Pitch(dx, dy)
 {
-	var phi = Math.atan2(-dy, dx); // inverse of the spiral angle, in (-pi, pi]
-	var r = Math.sqrt(dx * dx + dy * dy);
-	var f, k, i, j, t, d, lo, hi, m1, m2;
-	var best = 0;
-	var bestd = r * r; // t = 0 is the spiral center
-	var candidates = [tmax];
+	var rad = Math.atan2(dy, dx); // inverse of the spiral angle, in (-pi, pi]
+	const pitch0 = rad2Pitch(rad);
+	var radius = Math.sqrt(dx * dx + dy * dy);
 
-	function dist(t)
-	{
-		var p = spiralPixel(t);
-		return (p[0] - dx) * (p[0] - dx) + (p[1] - dy) * (p[1] - dy);
+	// midi pitch of the lower C note
+	var pitch_c = radius-pitch0;
+	var r0 = Math.round((pitch_c)/TURN)*TURN + pitch0;
+	
+
+	if (r0 > TMAX){
+		r0 = r0 - Math.ceil((r0-TMAX)/TURN)*TURN;
 	}
 
-	if (phi < 0)
-		phi += 2 * Math.PI;
-	f = phi / (2 * Math.PI); // fraction of a turn
-	// radius gap between two turns is A*TURN: the turn index is the gap to the radius at phi
-	k = Math.round((r - A * TURN * f) / (A * TURN));
-	k = clamp(k, 0, Math.max(0, Math.floor(tmax / TURN - f)));
-	for (i = k - 1; i <= k + 1; i++)
-		candidates.push(clamp((f + i) * TURN, 0, tmax));
+	return r0;
+}
 
-	for (i = 0; i < candidates.length; i++) {
-		// the nearest point is not exactly at the same angle since the turns are slanted:
-		// refine around each candidate (ternary search)
-		lo = Math.max(0, candidates[i] - REFINE);
-		hi = Math.min(tmax, candidates[i] + REFINE);
-		for (j = 0; j < 30; j++) {
-			m1 = lo + (hi - lo) / 3;
-			m2 = hi - (hi - lo) / 3;
-			if (dist(m1) < dist(m2))
-				hi = m2;
-			else
-				lo = m1;
-		}
-		t = (lo + hi) / 2;
-		d = dist(t);
-		if (d < bestd) {
-			bestd = d;
-			best = t;
-		}
-	}
-	return best;
+// spiral space -> pixel space (current view size): [x, y]
+function spiral2Pixel(dx, dy)
+{
+	var s = Math.min(size()[0], size()[1]);
+	var k = pixelsPerUnit([s, s]);
+	return [s / 2 + dx * k, s / 2 - dy * k];
+}
+
+// pixel space -> spiral space (current view size): [dx, dy]
+function pixel2Spiral(x, y)
+{
+	var s = Math.min(size()[0], size()[1]);
+	var k = pixelsPerUnit([s, s]);
+	return k > 0 ? [(x - s / 2) / k, (s / 2 - y) / k] : [0, 0];
 }
 
 var spiral = {
 	points: [], // not draggable
-	color: Point.DEFAULT_COLOR.slice(),
+	color: Colors.DARK_GRAY.slice(),
 
 	setColor: function(c)
 	{
@@ -101,42 +114,75 @@ var spiral = {
 
 	draw: function(s)
 	{
-		var tmax = tMax(s);
-		var i, p;
+		var i, p, q;
 		var c = this.color.slice();
 		with (sketch) {
 			glcolor(c);
-			gllinewidth(2);
+			gllinewidth(1);
 			for (i = 0; i <= STEPS; i++) {
-				p = spiralPixel(tmax * i / STEPS);
-				// pixels from center to world coordinates (view height spans 2 units)
+				p = pitch2Spiral(TMAX * i / STEPS);
+				q = spiral2Pixel(p[0], p[1]);
+				// pixels to world coordinates (view height spans 2 units)
 				if (i == 0)
-					moveto(p[0] * 2 / s[1], -p[1] * 2 / s[1]);
+					moveto((q[0] * 2 - s[0]) / s[1], 1 - q[1] * 2 / s[1]);
 				else
-					lineto(p[0] * 2 / s[1], -p[1] * 2 / s[1]);
+					lineto((q[0] * 2 - s[0]) / s[1], 1 - q[1] * 2 / s[1]);
 			}
 		}
 	}
 };
 widget.add(spiral);
 
-var handle = new Point(0.5, 0.5);
-handle.value = 0; // 0-1 along the spiral
+var HARMONICITY_THRESHOLD = -7; // lowest harmonicity kept; ratios range from this (alpha 0) to 0 (alpha 1)
 
-// moves the point to the spiral position of the current value for a view of size s
+// one line per simple ratio [h, i, j], from the center along the angle of the ratio i/j:
+// log2(i/j) turns, i.e. the spiral angle of the pitch TURN*log2(i/j)
+var ratioLines = {
+	points: [], // not draggable
+	color: Colors.MAGENTA.slice(),
+	ratios: generate_simple_ratios(HARMONICITY_THRESHOLD),
+
+	draw: function(s)
+	{
+		var k, rad, q;
+		var o = spiral2Pixel(0, 0);
+		var c = this.color.slice();
+		with (sketch) {
+			gllinewidth(1);
+			for (k = 0; k < this.ratios.length; k++) {
+				// harmonicity from HARMONICITY_THRESHOLD..0 remapped to alpha 0..1
+				c[3] = clamp(1 - this.ratios[k][0] / HARMONICITY_THRESHOLD, 0, 1);
+				glcolor(c);
+				rad = pitch2Rad(TURN * Math.log(this.ratios[k][1] / this.ratios[k][2]) / Math.log(2));
+				q = spiral2Pixel(A * TMAX * Math.cos(rad), A * TMAX * Math.sin(rad));
+				moveto((o[0] * 2 - s[0]) / s[1], 1 - o[1] * 2 / s[1]);
+				lineto((q[0] * 2 - s[0]) / s[1], 1 - q[1] * 2 / s[1]);
+			}
+		}
+	}
+};
+widget.add(ratioLines);
+
+var handle = new Point(0.5, 0.5);
+handle.radius = 4;
+handle.t = 0; // position along the spiral: turns * TURN
+
+// moves the point to the spiral position of the current t for a view of size s
+// (drawn at the end of the spiral if t is beyond it, the value is kept)
 handle.place = function(s)
 {
-	var p = spiralPixel(this.value * tMax(s));
-	this.x = (s[0] / 2 + p[0]) / s[0];
-	this.y = (s[1] / 2 + p[1]) / s[1];
+	var p = pitch2Spiral(Math.min(this.t, TMAX));
+	var q = spiral2Pixel(p[0], p[1]);
+	this.x = q[0] / s[0];
+	this.y = q[1] / s[1];
 };
 
 // x, y are normalized to the view size: the point goes to the nearest spiral point
 handle.move = function(x, y)
 {
 	var s = size();
-	var tmax = tMax(s);
-	this.value = tmax > 0 ? nearestT(x * s[0] - s[0] / 2, y * s[1] - s[1] / 2, tmax) / tmax : 0;
+	var p = pixel2Spiral(x * s[0], y * s[1]);
+	this.t = spiral2Pitch(p[0], p[1]);
 	this.place(s);
 };
 
@@ -150,12 +196,12 @@ handle.draw = function(s, filled)
 widget.add(handle);
 
 widget.output = function() {
-	outlet(0, handle.value);
+	outlet(0, handle.t);
 };
 
-function set(v)
+function set(t)
 {
-	handle.value = clamp(v, 0, 1);
+	handle.t = clamp(t, 0, TMAX);
 	handle.place(size());
 	widget.changed();
 }
@@ -178,5 +224,5 @@ function setvalueof(v)
 
 function getvalueof()
 {
-	return handle.value;
+	return handle.t;
 }

@@ -19,7 +19,12 @@ var Colors = (function() {
 		BLUE: rgb(palette[2]),
 		CYAN: rgb(palette[3]),
 		MAGENTA: rgb(palette[4]),
-		YELLOW: rgb(palette[5])
+		YELLOW: rgb(palette[5]),
+		WHITE: rgb("ffffff"),
+		LIGHT_GRAY: rgb("d3d3d3"),
+		DARK_GRAY: rgb("a9a9a9"),
+		BLACK: rgb("000000")
+
 	});
 })();
 
