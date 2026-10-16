@@ -1,18 +1,20 @@
 /*
 
-1d slider moving along a spiral, centered in the view, on a black background.
-Outputs t, the position along the spiral: number of turns * TURN (12 per turn), from 0 at the
-center to TMAX at the outer end. It is not normalized to 0-1.
-The point is always constrained on the spiral.
+6 draggable points sharing the same spiral, centered in the view, on a black background, one
+color each. Each point comes with its set of lines (see SpiralPoint).
+Outputs "i t": the point index 0-5 and t, its position along the spiral: number of turns * TURN
+(12 per turn), from 0 at the center to TMAX at the outer end. It is not normalized to 0-1.
+The points are always constrained on the spiral.
 
-spiral: angle(t) = 2*pi*t/TURN, radius(t) = A*t, counter-clockwise. The spiral is scaled to the
+spiral: angle(t) = 2*pi*t/TURN, radius(t) = t, clockwise from the top. The spiral is scaled to the
 view size so that it always fits (see the spaces below).
 
 messages:
-	float / int t      set t and output
-	set t              set t, no output
-	bang               output t
-	colour r g b       color (0-255)
+	list i t           set point i position t and output
+	set i t            set point i position t, no output
+	visible i v        show (1) or hide (0) point i; a hidden point can't be dragged
+	bang               output every point
+	colour r g b       color for the spiral and all the points (0-255)
 
 */
 
@@ -186,7 +188,7 @@ SpiralPoint.prototype.drawLines = function(s)
 			c[3] = ALPHAS[k];
 			glcolor(c);
 			rad = offset + RADIANS[k];
-			q = spiral2Pixel(A * TMAX * Math.cos(rad), A * TMAX * Math.sin(rad));
+			q = spiral2Pixel(TMAX * Math.cos(rad), TMAX * Math.sin(rad));
 			moveto((o[0] * 2 - s[0]) / s[1], 1 - o[1] * 2 / s[1]);
 			lineto((q[0] * 2 - s[0]) / s[1], 1 - q[1] * 2 / s[1]);
 		}
@@ -197,41 +199,89 @@ SpiralPoint.prototype.drawLines = function(s)
 SpiralPoint.prototype.draw = function(s, filled)
 {
 	this.place(s);
+	if (!this.visible)
+		return;
 	this.drawLines(s);
 	Point.prototype.draw.call(this, s, filled);
 };
 
-var handle = new SpiralPoint(60);
-widget.add(handle);
+var COLORS = [Colors.RED, Colors.GREEN, Colors.BLUE, Colors.CYAN, Colors.MAGENTA, Colors.YELLOW];
+var sliders = [];
 
-widget.output = function() {
-	outlet(0, handle.t);
+(function() {
+	var i, p;
+	for (i = 0; i < COLORS.length; i++) {
+		p = new SpiralPoint(36 + 7 * i);
+		p.setColor(COLORS[i]);
+		sliders.push(p);
+		widget.add(p);
+	}
+})();
+
+function output(i)
+{
+	outlet(0, i, sliders[i].t);
+}
+
+widget.output = function(p) {
+	var i;
+	if (p) {
+		output(sliders.indexOf(p));
+		return;
+	}
+	for (i = 0; i < sliders.length; i++)
+		output(i);
 };
 
-function set(t)
+function visible(i, v)
 {
-	handle.t = clamp(t, 0, TMAX);
-	handle.place(size());
+	if (i < 0 || i >= sliders.length)
+		return;
+	sliders[i].visible = v != 0;
 	widget.changed();
 }
 
-function msg_float(v)
+function set(i, t)
 {
-	set(v);
-	widget.output();
+	if (i < 0 || i >= sliders.length)
+		return false;
+	sliders[i].t = clamp(t, 0, TMAX);
+	sliders[i].place(size());
+	widget.changed();
+	return true;
 }
 
-function msg_int(v)
+// same as dragging point i: update, notify the clients once, then output i once
+function list(i, t)
 {
-	msg_float(v);
+	if (set(i, t))
+		output(i);
 }
 
-function setvalueof(v)
+// pattr state: t0 t1 t2 ...
+// Only the points whose value changes are output: notifyclients() (called by widget.changed()
+// after every drag or set) can make the host send back the current state, which must not
+// output every point again.
+function setvalueof()
 {
-	msg_float(v);
+	var i, t;
+	var changed = [];
+	for (i = 0; i < sliders.length && i < arguments.length; i++) {
+		t = clamp(arguments[i], 0, TMAX);
+		if (t !== sliders[i].t) {
+			sliders[i].t = t;
+			changed.push(i);
+		}
+	}
+	if (changed.length == 0)
+		return;
+	widget.changed();
+	for (i = 0; i < changed.length; i++)
+		output(changed[i]);
 }
+
 
 function getvalueof()
 {
-	return handle.t;
+	return sliders.map(function(p) { return p.t; });
 }
