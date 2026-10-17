@@ -64,4 +64,23 @@ var PitchEnvelopeColors = (function() {
 })();
 
 
-
+function getColor(paletteName, index)
+{
+	post("getColor: paletteName=" + paletteName + ", index=" + index + "\n");
+	switch(paletteName) {
+		case "OperatorColors":
+			var palette = [OperatorColors.RED, OperatorColors.YELLOW, OperatorColors.GREEN, OperatorColors.CYAN, OperatorColors.BLUE, OperatorColors.MAGENTA];
+			outlet(0, palette[index % palette.length]);
+			break;
+		case "AmpEnvelopeColors":
+			var palette = Object.values(AmpEnvelopeColors);
+			outlet(0, palette[index % palette.length]);
+			break;
+		case "PitchEnvelopeColors":
+			var palette = Object.values(PitchEnvelopeColors);
+			outlet(0, palette[index % palette.length]);
+			break;
+		default:
+			return null;
+	}
+}

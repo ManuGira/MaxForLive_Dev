@@ -13,6 +13,8 @@ Keep these in the same folder as the `jsui` script and the device (Max resolves 
 | `_poly_line.js` | `PolyLine` |
 | `_colors.js` | `Colors` palette (`RED`, `GREEN`, `BLUE`, `CYAN`, `MAGENTA`, `YELLOW`) |
 
+**Save the patcher first.** In a new, unsaved `.maxpat`, Max does not know this folder, so `include("_widget.js")` fails and the script reports errors such as `Point is not defined`. Save the patcher (or device) in this folder before testing a `jsui`.
+
 ## Minimal widget
 
 ```js
@@ -63,4 +65,4 @@ Position `x`, `y` is normalized to 0-1, (0,0) = top left.
 
 ## Examples
 
-`jsui_slider.js` (1D slider with a track) and `jsui_slider_2d.js` (2D slider).
+`jsui_slider.js` (1D slider with a track), `jsui_slider_2d.js` (2D slider) and `jsui_slider_spiral.js` (1D slider constrained on a spiral, set by `A` and `TURN`).
