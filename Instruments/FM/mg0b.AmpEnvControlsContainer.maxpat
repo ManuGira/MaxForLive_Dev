@@ -1798,7 +1798,7 @@
 						}
 ,
 						"classnamespace" : "box",
-						"rect" : [ 1731.0, 207.0, 630.0, 714.0 ],
+						"rect" : [ 1731.0, 207.0, 495.0, 714.0 ],
 						"bglocked" : 0,
 						"openinpresentation" : 1,
 						"default_fontsize" : 12.0,
@@ -2077,10 +2077,10 @@
 											"parameter_initial" : [ 0.0 ],
 											"parameter_initial_enable" : 1,
 											"parameter_linknames" : 1,
-											"parameter_longname" : "Y-Dec",
+											"parameter_longname" : "AmpEnv1-Dec",
 											"parameter_mmax" : 1000.0,
 											"parameter_modmode" : 4,
-											"parameter_shortname" : "Y-Dec",
+											"parameter_shortname" : "AmpEnv1-Dec",
 											"parameter_steps" : 1001,
 											"parameter_type" : 0,
 											"parameter_unitstyle" : 1
@@ -2089,7 +2089,7 @@
 									}
 ,
 									"showname" : 0,
-									"varname" : "Y-Dec"
+									"varname" : "AmpEnv1-Dec"
 								}
 
 							}
@@ -2118,10 +2118,10 @@
 											"parameter_initial" : [ 0.0 ],
 											"parameter_initial_enable" : 1,
 											"parameter_linknames" : 1,
-											"parameter_longname" : "Y-Att",
+											"parameter_longname" : "AmpEnv1-Att",
 											"parameter_mmax" : 1000.0,
 											"parameter_modmode" : 4,
-											"parameter_shortname" : "Y-Att",
+											"parameter_shortname" : "AmpEnv1Att",
 											"parameter_steps" : 1001,
 											"parameter_type" : 0,
 											"parameter_unitstyle" : 1
@@ -2130,7 +2130,7 @@
 									}
 ,
 									"showname" : 0,
-									"varname" : "Y-Att"
+									"varname" : "AmpEnv1-Att"
 								}
 
 							}
