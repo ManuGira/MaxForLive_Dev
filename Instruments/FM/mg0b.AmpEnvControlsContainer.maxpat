@@ -2589,10 +2589,11 @@
 											"parameter_exponent" : 4.0,
 											"parameter_initial" : [ 0.0 ],
 											"parameter_initial_enable" : 1,
-											"parameter_longname" : "G-Rel[1]",
+											"parameter_linknames" : 1,
+											"parameter_longname" : "AmpEnv2-Rel",
 											"parameter_mmax" : 1000.0,
 											"parameter_modmode" : 4,
-											"parameter_shortname" : "G-Rel",
+											"parameter_shortname" : "AmpEnv2-Rel",
 											"parameter_steps" : 1001,
 											"parameter_type" : 0,
 											"parameter_unitstyle" : 1
@@ -2601,7 +2602,7 @@
 									}
 ,
 									"showname" : 0,
-									"varname" : "G-Rel"
+									"varname" : "AmpEnv2-Rel"
 								}
 
 							}
@@ -2630,10 +2631,10 @@
 											"parameter_initial" : [ 0.0 ],
 											"parameter_initial_enable" : 1,
 											"parameter_linknames" : 1,
-											"parameter_longname" : "G-Sus[1]",
+											"parameter_longname" : "AmpEnv2-Sus",
 											"parameter_mmax" : 1.0,
 											"parameter_modmode" : 4,
-											"parameter_shortname" : "G-Sus",
+											"parameter_shortname" : "AmpEnv2-Sus",
 											"parameter_steps" : 1001,
 											"parameter_type" : 0,
 											"parameter_unitstyle" : 1
@@ -2642,7 +2643,7 @@
 									}
 ,
 									"showname" : 0,
-									"varname" : "G-Sus"
+									"varname" : "AmpEnv2-Sus"
 								}
 
 							}
@@ -2671,10 +2672,10 @@
 											"parameter_initial" : [ 0.0 ],
 											"parameter_initial_enable" : 1,
 											"parameter_linknames" : 1,
-											"parameter_longname" : "G-Dec[1]",
+											"parameter_longname" : "AmpEnv2-Dec",
 											"parameter_mmax" : 1000.0,
 											"parameter_modmode" : 4,
-											"parameter_shortname" : "G-Dec",
+											"parameter_shortname" : "AmpEnv2-Dec",
 											"parameter_steps" : 1001,
 											"parameter_type" : 0,
 											"parameter_unitstyle" : 1
@@ -2683,7 +2684,7 @@
 									}
 ,
 									"showname" : 0,
-									"varname" : "G-Dec"
+									"varname" : "AmpEnv2-Dec"
 								}
 
 							}
@@ -2712,10 +2713,10 @@
 											"parameter_initial" : [ 0.0 ],
 											"parameter_initial_enable" : 1,
 											"parameter_linknames" : 1,
-											"parameter_longname" : "G-Att[1]",
+											"parameter_longname" : "AmpEnv2-Att",
 											"parameter_mmax" : 1000.0,
 											"parameter_modmode" : 4,
-											"parameter_shortname" : "G-Att",
+											"parameter_shortname" : "AmpEnv2-Att",
 											"parameter_steps" : 1001,
 											"parameter_type" : 0,
 											"parameter_unitstyle" : 1
@@ -2724,7 +2725,7 @@
 									}
 ,
 									"showname" : 0,
-									"varname" : "G-Att"
+									"varname" : "AmpEnv2-Att"
 								}
 
 							}
