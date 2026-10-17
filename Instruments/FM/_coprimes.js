@@ -22,6 +22,14 @@ function gcd(a, b)
 	return a;
 }
 
+// Keeps only the pairs [i, j] whose gcd is 1.
+function filterCoprimes(pairs)
+{
+	return pairs.filter(function (p) {
+		return gcd(p[0], p[1]) === 1;
+	});
+}
+
 function harmonicity(a, b)
 {
     return -Math.log(a * b)/Math.log(2);
@@ -39,14 +47,12 @@ function generate_simple_ratios(lowest_harmonicity)
     var pairs = allPairs(1, N);
 
     // Coprime pairs: Keeps only the pairs [i, j] whose gcd is 1
-	pairs = pairs.filter(function (p) {
-		return gcd(p[0], p[1]) === 1;
-	});
+    pairs = filterCoprimes(pairs);
 
     // Octave pairs: Keeps only the pairs [i, j] whose ratio is less than or equal to 2 (within one octave)
     pairs = pairs.filter(function (p) {
         var ratio = p[0] / p[1];
-        return 0.5 <= ratio && ratio < 2;
+        return 1 <= ratio && ratio < 2;
     });
 
 

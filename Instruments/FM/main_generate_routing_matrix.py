@@ -25,9 +25,9 @@ def generate_routing_matrix_patch(N) -> Patch:
     send_box = SendBox(text="---RoutingMatrix")
     patch.add_box(send_box)
     
-    COLORS = ["ff544b","66cf5b","008de2","2ae2df","ff8bc6","e8cf2a"]
-    COL_LABELS = "R,G,B,C,M,Y".split(",")
-    ROW_LABELS = "Rfreq,Gfreq,Bfreq,Cfreq,Mfreq,Yfreq".split(",")
+    COLORS = ["ff544b","e8cf2a","66cf5b","2ae2df","008de2","ff8bc6"]
+    COL_LABELS = "R,Y,G,C,B,M".split(",")
+    ROW_LABELS = "Rfreq,Yfreq,Gfreq,Cfreq,Bfreq,Mfreq".split(",")
 
     # TOP LABELS
     for j in range(N): # iterate over columns
@@ -93,7 +93,7 @@ def generate_routing_matrix_patch(N) -> Patch:
 def main() -> None:
     HERE = Path(__file__).parent.resolve()
    
-    patch: Patch = generate_routing_matrix_patch(2)
+    patch: Patch = generate_routing_matrix_patch(6)
     patch_dict = patch.dict
     patch_dict["patcher"]["openinpresentation"] = 1
 

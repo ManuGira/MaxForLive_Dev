@@ -15,7 +15,7 @@ messages:
 */
 include("_widget.js");
 
-var COLORS = [Colors.RED, Colors.GREEN, Colors.BLUE, Colors.CYAN, Colors.MAGENTA, Colors.YELLOW];
+var COLORS = [AmpEnvelopeColors.C0, AmpEnvelopeColors.C1, AmpEnvelopeColors.C2, AmpEnvelopeColors.C3, AmpEnvelopeColors.C4, AmpEnvelopeColors.C5];
 var SEGMENT = 0.33; // max x travel of p1, p2 and p4
 var SUSTAIN_END = 0.66; // x of p3 and min x of p4
 var envelopes = [];

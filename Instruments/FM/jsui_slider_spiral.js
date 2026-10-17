@@ -112,7 +112,7 @@ function pixel2Spiral(x, y)
 
 var spiral = {
 	points: [], // not draggable
-	color: Colors.DARK_GRAY.slice(),
+	color: OperatorColors.DARK_GRAY.slice(),
 
 	setColor: function(c)
 	{
@@ -141,7 +141,7 @@ var spiral = {
 };
 widget.add(spiral);
 
-var HARMONICITY_THRESHOLD = -7; // lowest harmonicity kept; ratios range from this (alpha 0) to 0 (alpha 1)
+var HARMONICITY_THRESHOLD = -6; // lowest harmonicity kept; ratios range from this (alpha 0) to 0 (alpha 1)
 
 // Simple ratios [h, i, j], shared by all the points: one line per ratio, with the angle of the
 // ratio i/j (log2(i/j) turns) relative to the point and an alpha given by the harmonicity h.
@@ -227,7 +227,7 @@ SpiralPoint.prototype.draw = function(s, filled)
 	Point.prototype.draw.call(this, s, filled);
 };
 
-var COLORS = [Colors.RED, Colors.GREEN, Colors.BLUE, Colors.CYAN, Colors.MAGENTA, Colors.YELLOW];
+var COLORS = [OperatorColors.RED, OperatorColors.GREEN, OperatorColors.BLUE, OperatorColors.CYAN, OperatorColors.MAGENTA, OperatorColors.YELLOW];
 var sliders = [];
 
 (function() {
@@ -240,7 +240,7 @@ var sliders = [];
 
 	// point 6: white, not draggable, only moved by messages
 	p = new SpiralPoint(0);
-	p.setColor(Colors.WHITE);
+	p.setColor(OperatorColors.WHITE);
 	p.draggable = false;
 	sliders.push(p);
 

@@ -13,7 +13,7 @@ messages:
 */
 include("_widget.js");
 
-var COLORS = [Colors.RED, Colors.GREEN, Colors.BLUE, Colors.CYAN, Colors.MAGENTA, Colors.YELLOW];
+var COLORS = [OperatorColors.RED, OperatorColors.GREEN, OperatorColors.BLUE, OperatorColors.CYAN, OperatorColors.MAGENTA, OperatorColors.YELLOW];
 var sliders = [];
 
 (function() {
