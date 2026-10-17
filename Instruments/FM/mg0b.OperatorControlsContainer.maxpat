@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 1570.0, 77.0, 1513.0, 929.0 ],
+		"rect" : [ 1568.0, 75.0, 1513.0, 929.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 1,
 		"default_fontsize" : 12.0,
@@ -39,6 +39,18 @@
 		"subpatcher_template" : "",
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-70",
+					"linecount" : 4,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 760.0, 10.0, 150.0, 60.0 ],
+					"text" : "Click here to edit colors and varname (must be done once during developement)"
+				}
+
+			}
+, 			{
 				"box" : 				{
 					"id" : "obj-68",
 					"maxclass" : "newobj",
@@ -94,7 +106,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 726.0, 206.0, 125.0, 22.0 ],
-					"presentation_linecount" : 2,
 					"text" : "$1 varname $1-Depth"
 				}
 
@@ -527,7 +538,7 @@
 ,
 					"patching_rect" : [ 240.0, 540.0, 84.0, 72.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 296.0, 542.0, 85.0, 47.0 ],
+					"presentation_rect" : [ 90.0, 120.0, 85.0, 47.0 ],
 					"viewvisibility" : 1
 				}
 
@@ -924,7 +935,7 @@
 ,
 					"patching_rect" : [ 195.0, 450.0, 84.0, 72.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 190.0, 452.0, 85.0, 47.0 ],
+					"presentation_rect" : [ 0.0, 120.0, 85.0, 47.0 ],
 					"viewvisibility" : 1
 				}
 
@@ -1321,7 +1332,7 @@
 ,
 					"patching_rect" : [ 150.0, 363.0, 84.0, 72.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 222.0, 290.0, 85.0, 47.0 ],
+					"presentation_rect" : [ 90.0, 60.0, 85.0, 47.0 ],
 					"viewvisibility" : 1
 				}
 
@@ -1795,7 +1806,7 @@
 ,
 					"patching_rect" : [ 60.0, 180.0, 84.0, 72.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 123.0, 127.0, 85.0, 47.0 ],
+					"presentation_rect" : [ 90.0, 0.0, 85.0, 47.0 ],
 					"viewvisibility" : 1
 				}
 
