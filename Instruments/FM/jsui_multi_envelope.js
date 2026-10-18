@@ -76,7 +76,10 @@ function makeEnvelope(color)
 	for (i = 0; i < COLORS.length; i++) {
 		env = makeEnvelope(COLORS[i]);
 		envelopes.push(env);
-		widget.add(env);
+	}
+	// register envelopes with the widget in reverse order so that the first envelope is on top
+	for (i = envelopes.length-1; i >= 0; i--) {
+		widget.add(envelopes[i]);
 	}
 })();
 

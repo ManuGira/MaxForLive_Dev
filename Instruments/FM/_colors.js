@@ -73,14 +73,15 @@ function getColor(paletteName, index)
 			outlet(0, palette[index % palette.length]);
 			break;
 		case "AmpEnvelopeColors":
-			var palette = Object.values(AmpEnvelopeColors);
+			var palette = [AmpEnvelopeColors.C0, AmpEnvelopeColors.C1, AmpEnvelopeColors.C2, AmpEnvelopeColors.C3, AmpEnvelopeColors.C4, AmpEnvelopeColors.C5];
 			outlet(0, palette[index % palette.length]);
 			break;
 		case "PitchEnvelopeColors":
-			var palette = Object.values(PitchEnvelopeColors);
+			var palette = [PitchEnvelopeColors.C0, PitchEnvelopeColors.C1, PitchEnvelopeColors.C2, PitchEnvelopeColors.C3, PitchEnvelopeColors.C4, PitchEnvelopeColors.C5];
 			outlet(0, palette[index % palette.length]);
 			break;
 		default:
+			post("Unknown paletteName: " + paletteName + "\n");
 			return null;
 	}
 }

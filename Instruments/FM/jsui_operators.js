@@ -23,7 +23,9 @@ var sliders = [];
 		p.setLimits(0.025, 0.025, 0.975, 0.975); // travel range, normalized to view size
 		p.setColor(COLORS[i]);
 		sliders.push(p);
-		widget.add(p);
+	}
+	for (i = sliders.length - 1; i >= 0 ; i--) {
+		widget.add(sliders[i]);
 	}
 })();
 
