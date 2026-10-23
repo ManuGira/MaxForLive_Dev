@@ -20,7 +20,7 @@ var COLORS = [PitchEnvelopeColors.C0, PitchEnvelopeColors.C1, PitchEnvelopeColor
 var envelopes = [];
 
 // Output scale: A from [-1, 1] and D from [0, 1] (D in milliseconds)
-var adScale = [1.0, 1000.0];
+var adScale = [24.0, 1000.0];
 
 function scaleADOutput(a, d)
 {

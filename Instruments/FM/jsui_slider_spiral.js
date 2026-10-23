@@ -284,7 +284,7 @@ function set(i, t)
 
 // sets the reference pitch of point i (0-127); t is kept, so the point moves on the spiral and
 // the output does not change
-function refPitch(i, pitch)
+function RefPitch(i, pitch)
 {
 	if (i < 0 || i >= sliders.length)
 		return;

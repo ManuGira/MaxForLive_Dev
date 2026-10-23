@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 134.0, 134.0, 640.0, 480.0 ],
+		"rect" : [ 638.0, 146.0, 640.0, 480.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -40,12 +40,48 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-9",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 2,
+					"outlettype" : [ "bang", "float" ],
+					"patching_rect" : [ 129.0, 104.0, 29.5, 22.0 ],
+					"text" : "t b f"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-4",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "float" ],
+					"patching_rect" : [ 129.0, 150.0, 31.0, 22.0 ],
+					"text" : "float"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"comment" : "",
+					"id" : "obj-3",
+					"index" : 2,
+					"maxclass" : "outlet",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 212.0, 423.0, 30.0, 30.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-2",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 247.0, 56.5, 77.0, 22.0 ],
+					"patching_rect" : [ 304.5, 56.0, 77.0, 22.0 ],
 					"text" : "loadmess #1"
 				}
 
@@ -57,7 +93,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 247.0, 157.5, 192.0, 47.0 ],
+					"patching_rect" : [ 247.0, 209.0, 192.0, 47.0 ],
 					"text" : "clamp to 172. I corresponds to 170000 Hz which is a too big number for signal"
 				}
 
@@ -69,7 +105,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 129.0, 170.0, 103.0, 22.0 ],
+					"patching_rect" : [ 129.0, 221.0, 103.0, 22.0 ],
 					"text" : "expr min($f1\\,172)"
 				}
 
@@ -78,11 +114,11 @@
 				"box" : 				{
 					"comment" : "Semitone",
 					"id" : "obj-1",
-					"index" : 2,
+					"index" : 3,
 					"maxclass" : "outlet",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 347.0, 302.0, 30.0, 30.0 ]
+					"patching_rect" : [ 282.0, 423.0, 30.0, 30.0 ]
 				}
 
 			}
@@ -93,7 +129,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 4.0, 250.0, 116.0, 127.0 ],
+					"patching_rect" : [ 4.0, 301.0, 117.0, 127.0 ],
 					"text" : "Smooth transition\nwith \"slide~ 900 900\"\n\nNB: Cest top quand on fait des sweep, mais pas pour jouer du midi alors j'ai enlevé"
 				}
 
@@ -104,7 +140,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 4.0, 202.0, 116.0, 20.0 ],
+					"patching_rect" : [ 4.0, 253.0, 116.0, 20.0 ],
 					"text" : "Convert to Hz"
 				}
 
@@ -116,7 +152,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 0.5, 128.5, 123.0, 33.0 ],
+					"patching_rect" : [ 1.0, 180.0, 123.0, 33.0 ],
 					"text" : "Add reference offset\nDefault to 0"
 				}
 
@@ -127,7 +163,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 319.0, 27.0, 135.0, 20.0 ],
+					"patching_rect" : [ 395.0, 22.0, 135.0, 20.0 ],
 					"text" : "Reference semitone"
 				}
 
@@ -138,7 +174,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 91.0, 27.0, 125.0, 20.0 ],
+					"patching_rect" : [ 91.0, 18.0, 125.0, 20.0 ],
 					"text" : "semitones [float]"
 				}
 
@@ -151,7 +187,7 @@
 					"maxclass" : "outlet",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 129.0, 372.0, 30.0, 30.0 ]
+					"patching_rect" : [ 129.0, 423.0, 30.0, 30.0 ]
 				}
 
 			}
@@ -162,7 +198,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "bang", "float" ],
-					"patching_rect" : [ 152.0, 96.0, 29.5, 22.0 ],
+					"patching_rect" : [ 228.0, 104.0, 29.5, 22.0 ],
 					"text" : "t b f"
 				}
 
@@ -176,7 +212,7 @@
 					"numinlets" : 0,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 354.0, 52.5, 30.0, 30.0 ]
+					"patching_rect" : [ 430.0, 48.0, 30.0, 30.0 ]
 				}
 
 			}
@@ -190,8 +226,8 @@
 					"maxclass" : "inlet",
 					"numinlets" : 0,
 					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 129.0, 57.0, 30.0, 30.0 ]
+					"outlettype" : [ "float" ],
+					"patching_rect" : [ 129.0, 48.0, 30.0, 30.0 ]
 				}
 
 			}
@@ -202,7 +238,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 129.0, 201.0, 32.0, 22.0 ],
+					"patching_rect" : [ 129.0, 252.0, 32.0, 22.0 ],
 					"text" : "mtof"
 				}
 
@@ -214,7 +250,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "float" ],
-					"patching_rect" : [ 129.0, 134.0, 29.5, 22.0 ],
+					"patching_rect" : [ 129.0, 185.5, 29.5, 22.0 ],
 					"text" : "+ 0."
 				}
 
@@ -226,7 +262,7 @@
 					"numinlets" : 3,
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
-					"patching_rect" : [ 172.0, 320.0, 87.0, 22.0 ],
+					"patching_rect" : [ 19.0, 431.0, 87.0, 22.0 ],
 					"text" : "slide~ 960 960"
 				}
 
@@ -238,7 +274,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
-					"patching_rect" : [ 129.0, 225.0, 31.0, 22.0 ],
+					"patching_rect" : [ 129.0, 276.0, 31.0, 22.0 ],
 					"text" : "sig~"
 				}
 
@@ -284,6 +320,22 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-101", 0 ],
+					"order" : 1,
+					"source" : [ "obj-4", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-3", 0 ],
+					"order" : 0,
+					"source" : [ "obj-4", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-9", 0 ],
 					"source" : [ "obj-5", 0 ]
 				}
 
@@ -304,8 +356,22 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-101", 0 ],
+					"destination" : [ "obj-4", 0 ],
 					"source" : [ "obj-7", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-4", 1 ],
+					"source" : [ "obj-9", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-4", 0 ],
+					"source" : [ "obj-9", 0 ]
 				}
 
 			}
