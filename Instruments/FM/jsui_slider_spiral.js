@@ -155,8 +155,8 @@ var RADIANS = RATIOS.map(function(r) {
 
 // Point constrained on the spiral, drawn with its set of lines: the lines start at the center and
 // are rotated so that the strongest one (ratio 1/1) passes through the point.
-// t is the pitch relative to refPitch, in [T_MIN, T_MAX] (so it can be negative): the point is on
-// the spiral at the pitch refPitch + t.
+// t is the pitch relative to refPitch (so it can be negative): the point is on the spiral at the
+// pitch refPitch + t. Dragging keeps t in [T_MIN, T_MAX]; set() can go beyond.
 function SpiralPoint(t, refPitch)
 {
 	Point.call(this, 0.5, 0.5);
@@ -227,7 +227,7 @@ SpiralPoint.prototype.draw = function(s, filled)
 	Point.prototype.draw.call(this, s, filled);
 };
 
-var COLORS = [OperatorColors.RED, OperatorColors.GREEN, OperatorColors.BLUE, OperatorColors.CYAN, OperatorColors.MAGENTA, OperatorColors.YELLOW];
+var COLORS = [OperatorColors.RED, OperatorColors.YELLOW, OperatorColors.GREEN, OperatorColors.CYAN, OperatorColors.BLUE, OperatorColors.MAGENTA];
 var sliders = [];
 
 (function() {
@@ -276,7 +276,7 @@ function set(i, t)
 {
 	if (i < 0 || i >= sliders.length)
 		return false;
-	sliders[i].t = sliders[i].clampT(t);
+	sliders[i].t = t; // not clamped: [T_MIN, T_MAX] only limits dragging and the displayed range
 	sliders[i].place(size());
 	widget.changed();
 	return true;
