@@ -235,13 +235,15 @@ var sliders = [];
 	for (i = 0; i < COLORS.length; i++) {
 		p = new SpiralPoint(36 + 7 * i - 60);
 		p.setColor(COLORS[i]);
+		p.draggable = false;
 		sliders.push(p);
 	}
 
-	// point 6: white, not draggable, only moved by messages
+	// point 6: white, not draggable, only moved by messages, hidden by default
 	p = new SpiralPoint(0);
 	p.setColor(OperatorColors.WHITE);
 	p.draggable = false;
+	p.visible = false;
 	sliders.push(p);
 
 	// the widget draws the items in the order added: point 6 first (bottom), point 0 last (top)
