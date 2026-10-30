@@ -17,6 +17,7 @@ messages:
 	refPitch i pitch   set the reference pitch of point i (0-127), the point keeps its t
 	visible i v        show (1) or hide (0) point i; a hidden point can't be dragged
 	bang               output every point
+	update             redraw; send it from a metro to throttle redraws
 	colour r g b       color for the spiral and all the points (0-255)
 
 */
@@ -271,7 +272,6 @@ function visible(i, v)
 	if (i < 0 || i >= sliders.length)
 		return;
 	sliders[i].visible = v != 0;
-	widget.changed();
 }
 
 function set(i, t)
@@ -280,7 +280,6 @@ function set(i, t)
 		return false;
 	sliders[i].t = t; // not clamped: [T_MIN, T_MAX] only limits dragging and the displayed range
 	sliders[i].place(size());
-	widget.changed();
 	return true;
 }
 
@@ -292,40 +291,17 @@ function RefPitch(i, pitch)
 		return;
 	sliders[i].refPitch = clamp(pitch, REF_MIN, REF_MAX);
 	sliders[i].place(size());
-	widget.changed();
 }
 
-// same as dragging point i: update, notify the clients once, then output i once
+// same as set, then output i once
 function list(i, t)
 {
 	if (set(i, t))
 		output(i);
 }
 
-// pattr state: t0 t1 t2 ...
-// Only the points whose value changes are output: notifyclients() (called by widget.changed()
-// after every drag or set) can make the host send back the current state, which must not
-// output every point again.
-function setvalueof()
+// called by a metro (e.g. every 200 ms) to throttle redraws
+function update()
 {
-	var i, t;
-	var changed = [];
-	for (i = 0; i < sliders.length && i < arguments.length; i++) {
-		t = sliders[i].clampT(arguments[i]);
-		if (t !== sliders[i].t) {
-			sliders[i].t = t;
-			changed.push(i);
-		}
-	}
-	if (changed.length == 0)
-		return;
-	widget.changed();
-	for (i = 0; i < changed.length; i++)
-		output(changed[i]);
-}
-
-
-function getvalueof()
-{
-	return sliders.map(function(p) { return p.t; });
+	redraw();
 }

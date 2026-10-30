@@ -10,6 +10,7 @@ messages:
 	list i a d s r     set envelope i and output
 	visible i v        show (1) or hide (0) envelope i
 	bang               output every envelope
+	update             redraw; send it from a metro to throttle redraws
 	colour r g b       color for all envelopes (0-255)
 
 */
@@ -105,7 +106,6 @@ widget.output = function(p) {
 		j = envelopes[i].points.indexOf(p);
 		if (j >= 0) {
 			constrain(envelopes[i], j);
-			widget.changed(); // constrain may have moved other points after the drag's redraw
 			output(i);
 			return;
 		}
@@ -119,7 +119,6 @@ function visible(i, v)
 	envelopes[i].visible = v != 0;
 	envelopes[i].points[0].visible = false; // setting visible propagates to all points
 	envelopes[i].points[3].visible = false;
-	widget.changed();
 }
 
 function set(i, a, d, s, r)
@@ -128,7 +127,6 @@ function set(i, a, d, s, r)
 	if (i < 0 || i >= envelopes.length)
 		return;
 	setEnvelope(envelopes[i], a, d, s, r);
-	widget.changed();
 }
 
 function list(i, a, d, s, r)
@@ -138,23 +136,8 @@ function list(i, a, d, s, r)
 		output(i);
 }
 
-// pattr state: a0 d0 s0 r0 a1 d1 s1 r1 ...
-function setvalueof()
+// called by a metro (e.g. every 200 ms) to throttle redraws
+function update()
 {
-	var i;
-	for (i = 0; i < envelopes.length && 4 * i + 3 < arguments.length; i++)
-		setEnvelope(envelopes[i], arguments[4 * i], arguments[4 * i + 1], arguments[4 * i + 2], arguments[4 * i + 3]);
-	widget.changed();
-	widget.output();
-}
-
-function getvalueof()
-{
-	var v = [];
-	var i, p;
-	for (i = 0; i < envelopes.length; i++) {
-		p = envelopes[i].points;
-		v.push(p[1].valueX(), p[2].valueX(), 1 - p[2].valueY(), p[4].valueX());
-	}
-	return v;
+	redraw();
 }

@@ -11,6 +11,7 @@ messages:
 	list i A D         set envelope i and output
 	visible i v        show (1) or hide (0) envelope i
 	bang               output every envelope
+	update             redraw; send it from a metro to throttle redraws
 	colour r g b       color for all envelopes (0-255)
 
 */
@@ -93,7 +94,6 @@ function visible(i, v)
 		return;
 	envelopes[i].visible = v != 0;
 	envelopes[i].points[2].visible = false; // setting visible propagates to all points
-	widget.changed();
 }
 
 function set(i, a, d)
@@ -103,7 +103,6 @@ function set(i, a, d)
 		return;
 	v = scaleADInput(a, d);
 	setEnvelope(envelopes[i], v[0], v[1]);
-	widget.changed();
 }
 
 function list(i, a, d)
@@ -113,23 +112,8 @@ function list(i, a, d)
 		output(i);
 }
 
-// pattr state: A0 D0 A1 D1 ... (unscaled, A in [-1, 1], D in [0, 1])
-function setvalueof()
+// called by a metro (e.g. every 200 ms) to throttle redraws
+function update()
 {
-	var i;
-	for (i = 0; i < envelopes.length && 2 * i + 1 < arguments.length; i++)
-		setEnvelope(envelopes[i], arguments[2 * i], arguments[2 * i + 1]);
-	widget.changed();
-	widget.output();
-}
-
-function getvalueof()
-{
-	var v = [];
-	var i, p;
-	for (i = 0; i < envelopes.length; i++) {
-		p = envelopes[i].points;
-		v.push(1 - 2 * p[0].y, p[1].valueX());
-	}
-	return v;
+	redraw();
 }

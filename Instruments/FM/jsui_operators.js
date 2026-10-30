@@ -8,6 +8,7 @@ messages:
 	list i x y         set slider i position (0-1) and output
 	set i x y          set slider i position, no output
 	bang               output every slider
+	update             redraw; send it from a metro to throttle redraws
 	colour r g b       color for all sliders (0-255)
 
 */
@@ -70,7 +71,6 @@ function visible(i, v)
 	if (i < 0 || i >= sliders.length)
 		return;
 	sliders[i].visible = v != 0;
-	widget.changed();
 }
 
 function set(i, x, y)
@@ -80,7 +80,6 @@ function set(i, x, y)
 	if (i < 0 || i >= sliders.length)
 		return;
 	sliders[i].setValue(pitch01, depth01);
-	widget.changed();
 }
 
 function list(i, x, y)
@@ -90,22 +89,8 @@ function list(i, x, y)
 		output(i);
 }
 
-// pattr state: x0 y0 x1 y1 ...
-function setvalueof()
+// called by a metro (e.g. every 200 ms) to throttle redraws
+function update()
 {
-	var i;
-	for (i = 0; i < sliders.length && 2 * i + 1 < arguments.length; i++)
-		sliders[i].setValue(arguments[2 * i], arguments[2 * i + 1]);
-	widget.changed();
-	widget.output();
+	redraw();
 }
-
-function getvalueof()
-{
-	var v = [];
-	var i;
-	for (i = 0; i < sliders.length; i++)
-		v.push(sliders[i].valueX(), sliders[i].valueY());
-	return v;
-}
-widget.changed();
