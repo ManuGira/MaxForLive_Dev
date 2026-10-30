@@ -1,1 +1,4 @@
 Audio Effects/eremes
+__pycache__
+*.egg-info
+py2max/build
