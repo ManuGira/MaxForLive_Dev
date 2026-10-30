@@ -4,7 +4,7 @@
 		"appversion" : 		{
 			"major" : 8,
 			"minor" : 6,
-			"revision" : 0,
+			"revision" : 5,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
@@ -40,36 +40,25 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
-					"id" : "obj-52",
-					"maxclass" : "live.dial",
-					"numinlets" : 1,
-					"numoutlets" : 2,
-					"outlettype" : [ "", "float" ],
-					"parameter_enable" : 1,
-					"patching_rect" : [ 395.0, 270.5, 41.0, 47.0 ],
-					"saved_attribute_attributes" : 					{
-						"valueof" : 						{
-							"parameter_longname" : "live.dial[12]",
-							"parameter_shortname" : "live.dial[12]",
-							"parameter_type" : 0,
-							"parameter_unitstyle" : 0
-						}
-
-					}
-,
-					"varname" : "live.dial"
+					"id" : "obj-23",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 455.0, 516.0, 76.0, 22.0 ],
+					"text" : "48000."
 				}
 
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-50",
-					"maxclass" : "newobj",
+					"id" : "obj-22",
+					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
-					"outlettype" : [ "signal" ],
-					"patching_rect" : [ 370.0, 377.0, 91.0, 22.0 ],
-					"text" : "delay~ 1000 10"
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 542.0, 516.0, 125.0, 22.0 ],
+					"text" : "7639.437268"
 				}
 
 			}
@@ -80,7 +69,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 15.0, 64.0, 404.0, 47.0 ],
+					"patching_rect" : [ 15.0, 64.0, 404.0, 48.0 ],
 					"text" : "The builtin phasor~ object is buggy. It crashes for too high frequencies.\nThis patcher offers an alternative. It is built on cycle~ which is way more stable."
 				}
 
@@ -158,7 +147,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 15.0, 15.0, 404.0, 47.0 ],
+					"patching_rect" : [ 15.0, 15.0, 404.0, 48.0 ],
 					"text" : "mg0.phasor~"
 				}
 
@@ -325,7 +314,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
-					"patching_rect" : [ 354.0, 455.0, 32.0, 22.0 ],
+					"patching_rect" : [ 345.0, 484.0, 32.0, 22.0 ],
 					"text" : "/~ 1."
 				}
 
@@ -361,7 +350,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
-					"patching_rect" : [ 304.0, 352.0, 42.0, 22.0 ],
+					"patching_rect" : [ 304.0, 367.0, 42.0, 22.0 ],
 					"text" : "delta~"
 				}
 
@@ -471,7 +460,16 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-23", 1 ],
+					"order" : 0,
+					"source" : [ "obj-32", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-37", 0 ],
+					"order" : 1,
 					"source" : [ "obj-32", 1 ]
 				}
 
@@ -485,7 +483,16 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-22", 1 ],
+					"order" : 0,
+					"source" : [ "obj-37", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-29", 1 ],
+					"order" : 1,
 					"source" : [ "obj-37", 0 ]
 				}
 
@@ -494,13 +501,6 @@
 				"patchline" : 				{
 					"destination" : [ "obj-15", 0 ],
 					"source" : [ "obj-39", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-50", 1 ],
-					"source" : [ "obj-52", 0 ]
 				}
 
 			}
