@@ -4,7 +4,7 @@
 		"appversion" : 		{
 			"major" : 8,
 			"minor" : 6,
-			"revision" : 0,
+			"revision" : 5,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
@@ -45,7 +45,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 97.25, 28.0, 101.5, 20.0 ],
-					"presentation_linecount" : 2,
 					"text" : "Midi velocity (int)"
 				}
 
@@ -69,7 +68,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 34.0, 132.0, 73.0, 47.0 ],
+					"patching_rect" : [ 34.0, 132.0, 73.0, 48.0 ],
 					"text" : "Ignore note off messages"
 				}
 
@@ -178,8 +177,8 @@
 					"numinlets" : 11,
 					"numoutlets" : 3,
 					"outlettype" : [ "signal", "signal", "" ],
-					"patching_rect" : [ 132.0, 300.0, 267.0, 22.0 ],
-					"text" : "live.adsr~ @attack_time 0 @sustain 0 resease 0"
+					"patching_rect" : [ 60.0, 300.0, 370.0, 22.0 ],
+					"text" : "live.adsr~ @attack_time 0 @sustain 0 resease 0 @decay_slope 0.5"
 				}
 
 			}
@@ -203,7 +202,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 336.0, 437.0, 238.230781555175781, 22.0 ],
-					"text" : "0 24. 90.182492"
+					"text" : "0 24. 88.873149"
 				}
 
 			}
@@ -301,7 +300,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 267.0, 13.0, 82.0, 22.0 ],
+					"patching_rect" : [ 267.0, 13.0, 82.0, 23.0 ],
 					"text" : "A D"
 				}
 
@@ -327,7 +326,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 407.0, 100.0, 96.0, 22.0 ],
-					"text" : "24. 90.182492"
+					"text" : "24. 88.873149"
 				}
 
 			}

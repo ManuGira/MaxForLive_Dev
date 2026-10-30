@@ -4,13 +4,13 @@
 		"appversion" : 		{
 			"major" : 8,
 			"minor" : 6,
-			"revision" : 0,
+			"revision" : 5,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 134.0, 134.0, 640.0, 480.0 ],
+		"rect" : [ 2246.0, 343.0, 640.0, 480.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -82,8 +82,8 @@
 					"numinlets" : 11,
 					"numoutlets" : 3,
 					"outlettype" : [ "signal", "signal", "" ],
-					"patching_rect" : [ 59.0, 295.0, 124.0, 22.0 ],
-					"text" : "live.adsr~"
+					"patching_rect" : [ 5.0, 331.0, 380.0, 22.0 ],
+					"text" : "live.adsr~ @attack_slope -0.5 @decay_slope 0.5 @release_slope 0.5"
 				}
 
 			}
@@ -106,7 +106,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 263.0, 437.0, 124.0, 22.0 ]
+					"patching_rect" : [ 263.0, 437.0, 181.0, 22.0 ],
+					"text" : "set 0 0.777796 137.552716 0. 0."
 				}
 
 			}
@@ -130,6 +131,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 187.0, 226.0, 101.0, 22.0 ],
+					"text" : "set 0 $1 $2 $3 $4",
 					"textcolor" : [ 1.0, 0.956862745098039, 0.329411764705882, 1.0 ]
 				}
 
@@ -142,6 +144,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 398.0, 300.0, 92.0, 22.0 ],
+					"text" : "set ---AmpEnv0",
 					"textcolor" : [ 1.0, 0.956862745098039, 0.329411764705882, 1.0 ]
 				}
 
@@ -202,7 +205,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 173.0, 12.0, 82.0, 22.0 ],
+					"patching_rect" : [ 173.0, 12.0, 82.0, 23.0 ],
 					"text" : "A D S R"
 				}
 
@@ -227,7 +230,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 324.0, 68.0, 96.0, 22.0 ]
+					"patching_rect" : [ 324.0, 68.0, 152.0, 22.0 ],
+					"text" : "0.777796 137.552716 0. 0."
 				}
 
 			}
